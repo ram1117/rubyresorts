@@ -1,4 +1,4 @@
-# Auction It- Back End
+# Ruby Resorts - Back End
 
 ## Describe your changes
 
