@@ -1,0 +1,11 @@
+version: '3'
+services:
+  mongo:
+    container_name: mongo
+    image: mongodb/mongodb-community-server:6.0-ubi8
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - '27017:27017'
+volumes:
+  mongo_data:
