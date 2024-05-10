@@ -17,7 +17,13 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
     return await this.model.findOne(filterQuery).lean<TDocument>(true);
   }
 
-  async findMany(filterQuery: FilterQuery<TDocument>): Promise<TDocument[]> {
+  async findMany() {
+    return await this.model.find();
+  }
+
+  async findManyByFilter(
+    filterQuery: FilterQuery<TDocument>,
+  ): Promise<TDocument[]> {
     return await this.model.find(filterQuery).lean<TDocument[]>(true);
   }
 

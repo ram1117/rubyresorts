@@ -1,11 +1,4 @@
-import { Prop, Schema } from '@nestjs/mongoose';
-// import { SchemaTypes, Types } from 'mongoose';
+import { Schema } from '@nestjs/mongoose';
 
-@Schema()
-export class AbstractDocument {
-  // @Prop({ type: SchemaTypes.ObjectId })
-  // _id: Types.ObjectId;
-
-  @Prop()
-  timestamps: true;
-}
+@Schema({ timestamps: true })
+export class AbstractDocument {}
