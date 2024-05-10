@@ -46,4 +46,8 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
   async findAndDeleteById(_id: string) {
     return await this.findAndDeleteById(_id);
   }
+
+  async deleteMany() {
+    return await this.deleteMany();
+  }
 }

@@ -7,6 +7,9 @@ import { RoomTypeDocument, RoomTypeSchema } from './model/room_type.model';
 import { RoomTypeRepository } from './rooms.repository';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
+import { AmenityDocument, AmenitySchema } from './model/amenity.model';
+import { SeederService } from './seeder.service';
+import { PriceDocument, PriceSchema } from './model/price.model';
 
 @Module({
   imports: [
@@ -20,9 +23,11 @@ import * as Joi from 'joi';
     DatabaseModule,
     MongooseModule.forFeature([
       { name: RoomTypeDocument.name, schema: RoomTypeSchema },
+      { name: AmenityDocument.name, schema: AmenitySchema },
+      { name: PriceDocument.name, schema: PriceSchema },
     ]),
   ],
   controllers: [RoomsController],
-  providers: [RoomsService, RoomTypeRepository],
+  providers: [RoomsService, SeederService, RoomTypeRepository],
 })
 export class RoomsModule {}

@@ -1,5 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { AbstractDocument } from '@app/shared';
+import { AmenityDocument } from './amenity.model';
+import { Types } from 'mongoose';
+import { PriceDocument } from './price.model';
 
 @Schema({ versionKey: false })
 export class RoomTypeDocument extends AbstractDocument {
@@ -11,6 +14,12 @@ export class RoomTypeDocument extends AbstractDocument {
 
   @Prop()
   total: number;
+
+  @Prop({ type: [AmenityDocument] })
+  amenities: Types.Array<AmenityDocument>;
+
+  @Prop({ type: PriceDocument })
+  price: PriceDocument;
 }
 
 export const RoomTypeSchema = SchemaFactory.createForClass(RoomTypeDocument);
