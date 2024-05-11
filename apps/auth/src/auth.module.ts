@@ -3,6 +3,7 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from '../../../libs/shared/src';
+import { UsersModule } from './users/users.module';
 import * as Joi from 'joi';
 
 @Module({
@@ -12,9 +13,12 @@ import * as Joi from 'joi';
       envFilePath: 'apps/auth/.env',
       isGlobal: true,
       validationSchema: Joi.object({
-        DATABASE_URL: Joi.string().required(),
+        MONGODB_URL: Joi.string().required(),
+        HTTP_PORT: Joi.string().required(),
+        RABBITMQ_URL: Joi.string().required(),
       }),
     }),
+    UsersModule,
   ],
   controllers: [AuthController],
   providers: [AuthService],
