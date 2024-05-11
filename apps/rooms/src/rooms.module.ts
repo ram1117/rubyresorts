@@ -10,6 +10,10 @@ import * as Joi from 'joi';
 import { AmenityDocument, AmenitySchema } from './model/amenity.model';
 import { SeederService } from './seeder.service';
 import { PriceDocument, PriceSchema } from './model/price.model';
+import {
+  RoomInventoryDocument,
+  RoomInventorySchema,
+} from './model/room_inventory.model';
 
 @Module({
   imports: [
@@ -25,6 +29,7 @@ import { PriceDocument, PriceSchema } from './model/price.model';
       { name: RoomTypeDocument.name, schema: RoomTypeSchema },
       { name: AmenityDocument.name, schema: AmenitySchema },
       { name: PriceDocument.name, schema: PriceSchema },
+      { name: RoomInventoryDocument.name, schema: RoomInventorySchema },
     ]),
   ],
   controllers: [RoomsController],

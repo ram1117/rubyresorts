@@ -11,10 +11,16 @@ export class CreateRoomDto {
   description: string;
 
   @IsNumber()
+  order: number;
+
+  @IsNumber()
   total: number;
 
   @IsArray()
   amenities: Types.Array<AmenityDocument>;
+
+  @IsArray()
+  images: string[];
 
   price: PriceDocument;
 }

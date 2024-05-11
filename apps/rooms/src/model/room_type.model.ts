@@ -15,11 +15,17 @@ export class RoomTypeDocument extends AbstractDocument {
   @Prop()
   total: number;
 
+  @Prop()
+  order: number;
+
   @Prop({ type: [AmenityDocument] })
   amenities: Types.Array<AmenityDocument>;
 
   @Prop({ type: PriceDocument })
   price: PriceDocument;
+
+  @Prop()
+  images: string[];
 }
 
 export const RoomTypeSchema = SchemaFactory.createForClass(RoomTypeDocument);
