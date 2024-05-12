@@ -1,11 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
-@Schema()
+@Schema({ versionKey: false })
 export class UserDocument {
   @Prop()
   email: string;
 
-  @Prop()
+  @Prop({ select: false })
   password: string;
 
   @Prop()
@@ -25,3 +25,11 @@ export class UserDocument {
 }
 
 export const UserSchema = SchemaFactory.createForClass(UserDocument);
+
+// remove password from returned JSON objects
+
+UserSchema.set('toJSON', {
+  transform: function (_, ret) {
+    delete ret.password;
+  },
+});
