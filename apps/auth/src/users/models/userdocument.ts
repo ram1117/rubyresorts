@@ -1,12 +1,16 @@
+import { AbstractDocument } from '@app/shared';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @Schema({ versionKey: false })
-export class UserDocument {
+export class UserDocument extends AbstractDocument {
   @Prop()
   email: string;
 
-  @Prop({ select: false })
+  @Prop()
   password: string;
+
+  @Prop()
+  username: string;
 
   @Prop()
   fullname: string;

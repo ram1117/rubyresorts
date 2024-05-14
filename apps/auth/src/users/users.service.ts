@@ -1,7 +1,13 @@
-import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { UserRepository } from './users.repository';
 import { CreateUserDto } from './dtos/create_user.dto';
 import * as bcrypt from 'bcrypt';
+import { SigninDto } from './dtos/signin.dto';
 
 @Injectable()
 export class UsersService {
@@ -29,5 +35,22 @@ export class UsersService {
 
   findOne(_id: string) {
     return this.userRepo.findById(_id);
+  }
+
+  update(_id: string, updateData: Partial<CreateUserDto>) {
+    return this.userRepo.findAndUpdateById(_id, updateData);
+  }
+
+  async validateUser({ username, password }: SigninDto) {
+    const user = await this.userRepo.findOne({ username });
+    if (!user) {
+      throw new NotFoundException('Use not found');
+    }
+
+    const isValidPassword = await bcrypt.compare(password, user.password);
+    if (!isValidPassword) {
+      throw new UnauthorizedException('Wrong password');
+    }
+    return user;
   }
 }

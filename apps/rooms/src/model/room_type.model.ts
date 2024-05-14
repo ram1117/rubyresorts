@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { AbstractDocument } from '@app/shared';
 import { AmenityDocument } from './amenity.model';
 import { Types } from 'mongoose';
 import { PriceDocument } from './price.model';
+import { AbstractDocument } from '@app/shared';
 
 @Schema({ versionKey: false })
 export class RoomTypeDocument extends AbstractDocument {

@@ -1,8 +1,8 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create_user.dto';
 import { UsersService } from './users.service';
 
-@Controller('users')
+@Controller('user')
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
@@ -14,5 +14,10 @@ export class UsersController {
   @Get(':id')
   getUser(@Param('id') _id: string) {
     return this.userService.findOne(_id);
+  }
+
+  @Patch(':id')
+  updateUser(@Body() data: Partial<CreateUserDto>, @Param('id') _id: string) {
+    return this.userService.update(_id, data);
   }
 }

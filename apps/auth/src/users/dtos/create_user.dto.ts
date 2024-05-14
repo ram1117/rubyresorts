@@ -3,6 +3,7 @@ import {
   IsMobilePhone,
   IsString,
   IsStrongPassword,
+  MinLength,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -12,6 +13,10 @@ export class CreateUserDto {
   @IsString()
   @IsStrongPassword()
   password: string;
+
+  @IsString()
+  @MinLength(8, { message: 'Should be atleast 8 characters' })
+  username: string;
 
   @IsString()
   fullname: string;
