@@ -5,6 +5,11 @@ import { DatabaseModule } from '@app/shared';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
+import {
+  ReservationsDocument,
+  ReservationsSchema,
+} from './models/reservations.model';
+import { ReservationsRepository } from './reservations.repoistory';
 
 @Module({
   imports: [
@@ -17,9 +22,11 @@ import * as Joi from 'joi';
       }),
     }),
     DatabaseModule,
-    MongooseModule.forFeature([]),
+    MongooseModule.forFeature([
+      { name: ReservationsDocument.name, schema: ReservationsSchema },
+    ]),
   ],
   controllers: [ReservationsController],
-  providers: [ReservationsService],
+  providers: [ReservationsService, ReservationsRepository],
 })
 export class ReservationsModule {}

@@ -6,7 +6,7 @@ export class ReservationsController {
   constructor(private readonly reservationsService: ReservationsService) {}
 
   @Get()
-  getHello(): string {
-    return this.reservationsService.getHello();
+  getReservations() {
+    return this.reservationsService.findManyById();
   }
 }
