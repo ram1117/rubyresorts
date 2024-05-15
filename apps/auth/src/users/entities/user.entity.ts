@@ -11,4 +11,17 @@ export class UserEntity {
 
   @Exclude()
   password: string;
+
+  @Exclude()
+  hashedRT: string;
+
+  @Exclude()
+  otp: string | null;
+
+  username: string;
+  fullname: string;
+  verified: boolean;
+  role: string;
+  address: string;
+  mobile: string;
 }

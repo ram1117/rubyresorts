@@ -31,4 +31,8 @@ export class CreateUserDto {
   @IsOptional()
   @IsString()
   hashedRT: string;
+
+  @IsOptional()
+  @IsString()
+  otp: string;
 }

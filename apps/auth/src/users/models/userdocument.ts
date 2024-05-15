@@ -2,7 +2,7 @@ import { AbstractDocument } from '@app/shared';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Exclude } from 'class-transformer';
 
-@Schema({ versionKey: false })
+@Schema({ versionKey: false, timestamps: true })
 export class UserDocument extends AbstractDocument {
   @Prop({ unique: true })
   email: string;
@@ -29,16 +29,13 @@ export class UserDocument extends AbstractDocument {
   @Prop()
   mobile: string;
 
-  @Prop({ default: '' })
+  @Prop({ default: null })
+  @Exclude()
   hashedRT: string;
+
+  @Prop({ default: null })
+  @Exclude()
+  otp: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(UserDocument);
-
-// remove password from returned JSON objects
-
-UserSchema.set('toJSON', {
-  transform: function (_, ret) {
-    delete ret.password;
-  },
-});

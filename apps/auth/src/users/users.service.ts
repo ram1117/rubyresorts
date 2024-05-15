@@ -39,6 +39,10 @@ export class UsersService {
     return new UserEntity(user);
   }
 
+  async find(email: string) {
+    return this.userRepo.findOne({ email });
+  }
+
   update(_id: string, updateData: Partial<CreateUserDto>) {
     return this.userRepo.findAndUpdateById(_id, updateData);
   }

@@ -3,7 +3,6 @@ import {
   Controller,
   Get,
   Patch,
-  Post,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -18,11 +17,6 @@ import MongooseSerializeInterceptor from '@app/shared/interceptors/mongoose-seri
 @UseInterceptors(MongooseSerializeInterceptor(UserDocument))
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
-
-  @Post('signup')
-  signup(@Body() data: CreateUserDto) {
-    return this.userService.create(data);
-  }
 
   @UseGuards(JwtAuthGuard)
   @Get()

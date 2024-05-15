@@ -4,6 +4,6 @@ import { Types } from 'mongoose';
 
 @Schema({ timestamps: true })
 export class AbstractDocument {
-  @Transform(({ value }) => value.toString())
+  @Transform((value) => value.obj._id.toString())
   _id: Types.ObjectId;
 }
