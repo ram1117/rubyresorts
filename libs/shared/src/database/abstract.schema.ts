@@ -1,8 +1,9 @@
-import { Prop, Schema } from '@nestjs/mongoose';
-import { SchemaTypes, Types } from 'mongoose';
+import { Schema } from '@nestjs/mongoose';
+import { Transform } from 'class-transformer';
+import { Types } from 'mongoose';
 
 @Schema({ timestamps: true })
 export class AbstractDocument {
-  @Prop({ type: SchemaTypes.ObjectId })
+  @Transform(({ value }) => value.toString())
   _id: Types.ObjectId;
 }

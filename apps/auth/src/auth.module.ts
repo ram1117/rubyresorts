@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from '../../../libs/shared/src';
 import { UsersModule } from './users/users.module';
 import * as Joi from 'joi';
 import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from './strategies/jwt.strategy';
+import { JwtRefreshStrategy } from './strategies/jwt-rt.strategy';
 
 @Module({
   imports: [
@@ -17,22 +19,16 @@ import { JwtModule } from '@nestjs/jwt';
         MONGODB_URL: Joi.string().required(),
         HTTP_PORT: Joi.string().required(),
         RABBITMQ_URL: Joi.string().required(),
-        JWT_SECRET: Joi.string().required(),
+        AT_JWT_SECRET: Joi.string().required(),
+        RT_JWT_SECRET: Joi.string().required(),
         AT_EXPIRY: Joi.string().required(),
         RT_EXPIRY: Joi.string().required(),
       }),
     }),
     UsersModule,
-    JwtModule.registerAsync({
-      inject: [ConfigService],
-      useFactory: function (configService: ConfigService) {
-        return {
-          secret: configService.get('JWT_SECRET'),
-        };
-      },
-    }),
+    JwtModule.register({}),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, JwtStrategy, JwtRefreshStrategy],
 })
 export class AuthModule {}

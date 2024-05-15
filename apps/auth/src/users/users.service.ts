@@ -8,6 +8,7 @@ import { UserRepository } from './users.repository';
 import { CreateUserDto } from './dtos/create_user.dto';
 import * as bcrypt from 'bcrypt';
 import { SigninDto } from './dtos/signin.dto';
+import { UserEntity } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -33,8 +34,9 @@ export class UsersService {
     });
   }
 
-  findOne(_id: string) {
-    return this.userRepo.findById(_id);
+  async findOne(_id: string) {
+    const user = await this.userRepo.findById(_id);
+    return new UserEntity(user);
   }
 
   update(_id: string, updateData: Partial<CreateUserDto>) {

@@ -1,8 +1,5 @@
-import { Types } from 'mongoose';
-
 export const RoomTypesData = [
   {
-    _id: new Types.ObjectId(),
     name: 'Standard Room',
     description:
       'Comfortable room with basic amenities suitable for solo travelers or couples.',
@@ -16,7 +13,6 @@ export const RoomTypesData = [
     ],
   },
   {
-    _id: new Types.ObjectId(),
     name: 'Deluxe Room',
     description:
       'Spacious room with extra amenities and a beautiful view, ideal for families or those seeking luxury.',
@@ -30,7 +26,6 @@ export const RoomTypesData = [
     ],
   },
   {
-    _id: new Types.ObjectId(),
     name: 'Suite',
     description:
       'Luxurious suite featuring separate living and sleeping areas, perfect for VIP guests or honeymooners.',
@@ -44,7 +39,6 @@ export const RoomTypesData = [
     ],
   },
   {
-    _id: new Types.ObjectId(),
     name: 'Beachfront Villa',
     description:
       'Exclusive villa located right on the beach with private access, ideal for those who want ultimate privacy and luxury.',
@@ -58,7 +52,6 @@ export const RoomTypesData = [
     ],
   },
   {
-    _id: new Types.ObjectId(),
     name: 'Penthouse',
     description:
       'Top-floor penthouse with panoramic views, private terrace, and deluxe amenities, perfect for special occasions or high-end travelers.',

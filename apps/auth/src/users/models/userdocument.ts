@@ -1,15 +1,17 @@
 import { AbstractDocument } from '@app/shared';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Exclude } from 'class-transformer';
 
 @Schema({ versionKey: false })
 export class UserDocument extends AbstractDocument {
-  @Prop()
+  @Prop({ unique: true })
   email: string;
 
   @Prop()
+  @Exclude()
   password: string;
 
-  @Prop()
+  @Prop({ unique: true })
   username: string;
 
   @Prop()
@@ -26,6 +28,9 @@ export class UserDocument extends AbstractDocument {
 
   @Prop()
   mobile: string;
+
+  @Prop({ default: '' })
+  hashedRT: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(UserDocument);
