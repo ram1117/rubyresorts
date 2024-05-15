@@ -14,10 +14,24 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
   }
 
   async findOne(filterQuery: FilterQuery<TDocument>): Promise<TDocument> {
-    return await this.model.findOne(filterQuery).lean<TDocument>(true);
+    const document = await this.model
+      .findOne(filterQuery)
+      .lean<TDocument>(true);
+    if (!document) throw new NotFoundException('Document not found');
+    return document;
   }
 
-  async findMany(filterQuery: FilterQuery<TDocument>): Promise<TDocument[]> {
+  async findMany() {
+    return await this.model.find().lean<TDocument>(true);
+  }
+
+  async findManySorted(sortBy: any) {
+    return await this.model.find().sort(sortBy).lean<TDocument>(true);
+  }
+
+  async findManyByFilter(
+    filterQuery: FilterQuery<TDocument>,
+  ): Promise<TDocument[]> {
     return await this.model.find(filterQuery).lean<TDocument[]>(true);
   }
 
@@ -25,9 +39,11 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
     _id: string,
     updateData: UpdateQuery<TDocument>,
   ): Promise<TDocument> {
-    const document = await this.model.findByIdAndUpdate(_id, updateData, {
-      new: true,
-    });
+    const document = await this.model
+      .findByIdAndUpdate(_id, updateData, {
+        new: true,
+      })
+      .lean<TDocument>(true);
 
     if (!document) {
       console.error('Document with given ID not found');
@@ -38,6 +54,10 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
   }
 
   async findAndDeleteById(_id: string) {
-    return await this.findAndDeleteById(_id);
+    return await this.findAndDeleteById(_id).lean<TDocument>(true);
+  }
+
+  async deleteMany() {
+    return await this.deleteMany().lean<TDocument>(true);
   }
 }
