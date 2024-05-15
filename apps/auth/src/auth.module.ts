@@ -8,6 +8,7 @@ import * as Joi from 'joi';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { JwtRefreshStrategy } from './strategies/jwt-rt.strategy';
+import AuthMSConfig from '@app/shared/config/microservice/authconfig';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { JwtRefreshStrategy } from './strategies/jwt-rt.strategy';
     ConfigModule.forRoot({
       envFilePath: 'apps/auth/.env',
       isGlobal: true,
+      load: [AuthMSConfig],
       validationSchema: Joi.object({
         MONGODB_URL: Joi.string().required(),
         HTTP_PORT: Joi.string().required(),

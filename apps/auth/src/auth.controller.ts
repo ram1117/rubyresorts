@@ -14,6 +14,7 @@ import { CurrentUser } from './decorators/current-user.decorator';
 import { JwtRefreshGuard } from './guards/jwtrefresh.guard';
 import { CreateUserDto } from './users/dtos/create_user.dto';
 import { ForgotPasswordDto } from './users/dtos/forgot_pwd.dto';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller('auth')
 export class AuthController {
@@ -56,5 +57,10 @@ export class AuthController {
   @Post('forgotpassword')
   async forgotpassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
     return this.authService.sendOtp(forgotPasswordDto.email);
+  }
+
+  @MessagePattern({ cmd: 'authenticate_user' })
+  authenticate(@Payload() payload: any) {
+    return payload;
   }
 }
