@@ -8,8 +8,23 @@ import { AbstractRepository } from '@app/shared';
 export class ReservationsRepository extends AbstractRepository<ReservationsDocument> {
   constructor(
     @InjectModel(ReservationsDocument.name)
-    reservationsModel: Model<ReservationsDocument>,
+    readonly reservationsModel: Model<ReservationsDocument>,
   ) {
     super(reservationsModel);
+  }
+
+  async findAllByUserPopulated(userId: string) {
+    return await this.reservationsModel
+      .find({ user: userId })
+      .lean<ReservationsDocument>(true)
+      .populate('roomtype', ['_id', 'name']);
+  }
+
+  async findAllPopulated() {
+    return await this.reservationsModel
+      .find()
+      .lean<ReservationsDocument>(true)
+      .populate('roomtype', ['_id', 'name'])
+      .populate('user', ['_id', 'fullname']);
   }
 }

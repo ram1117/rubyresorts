@@ -1,9 +1,10 @@
 import { AbstractDocument } from '@app/shared';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { UserDocument } from 'apps/auth/src/users/models/userdocument';
+import { RoomTypeDocument } from 'apps/rooms/src/model/room_type.model';
 import { Types } from 'mongoose';
 
-@Schema({ versionKey: false })
+@Schema({ versionKey: false, timestamps: true })
 export class ReservationsDocument extends AbstractDocument {
   @Prop()
   fromdate: Date;
@@ -23,8 +24,11 @@ export class ReservationsDocument extends AbstractDocument {
   @Prop({ default: 0.0 })
   total_price: number;
 
-  @Prop({ type: Types.ObjectId, ref: 'UserDocument' })
-  user: UserDocument;
+  @Prop({ type: Types.ObjectId, ref: UserDocument.name })
+  user: string;
+
+  @Prop({ type: Types.ObjectId, ref: RoomTypeDocument.name })
+  roomtype: string;
 }
 
 export const ReservationsSchema =

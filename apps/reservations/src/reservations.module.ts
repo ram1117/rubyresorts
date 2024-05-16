@@ -13,6 +13,14 @@ import {
 import { ReservationsRepository } from './reservations.repoistory';
 import { ClientsModule } from '@nestjs/microservices';
 import { SERVICE_NAMES } from '@app/shared/constants';
+import {
+  UserDocument,
+  UserSchema,
+} from 'apps/auth/src/users/models/userdocument';
+import {
+  RoomTypeDocument,
+  RoomTypeSchema,
+} from 'apps/rooms/src/model/room_type.model';
 
 @Module({
   imports: [
@@ -29,6 +37,8 @@ import { SERVICE_NAMES } from '@app/shared/constants';
     DatabaseModule,
     MongooseModule.forFeature([
       { name: ReservationsDocument.name, schema: ReservationsSchema },
+      { name: UserDocument.name, schema: UserSchema },
+      { name: RoomTypeDocument.name, schema: RoomTypeSchema },
     ]),
     ClientsModule.registerAsync([
       {

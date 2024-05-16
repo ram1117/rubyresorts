@@ -5,3 +5,7 @@ export enum SERVICE_NAMES {
 export enum QUEUE_NAMES {
   AUTH = 'auth_queue',
 }
+
+export enum SERVICE_PATTERNS {
+  AUTH = 'authenticate_user',
+}
