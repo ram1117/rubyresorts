@@ -1,16 +1,38 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { ReservationsRepository } from './reservations.repoistory';
+import { SERVICE_NAMES, SERVICE_PATTERNS } from '@app/shared/constants';
+import { ClientProxy } from '@nestjs/microservices';
+// import { map, pipe, tap } from 'rxjs';
 
 @Injectable()
 export class ReservationsService {
-  constructor(private readonly reservationRepo: ReservationsRepository) {}
+  constructor(
+    private readonly reservationRepo: ReservationsRepository,
+    @Inject(SERVICE_NAMES.PRICING) private pricingService: ClientProxy,
+  ) {}
 
-  create(createReservationDto: CreateReservationDto, userId: string) {
-    return this.reservationRepo.create({
-      ...createReservationDto,
-      user: userId,
-    });
+  async create(createReservationDto: CreateReservationDto) {
+    createReservationDto.fromdate.setUTCHours(0, 0, 0, 0);
+
+    const isAvailable = this.pricingService
+      .send(
+        { cmd: SERVICE_PATTERNS.PRICING },
+        {
+          fromdate: createReservationDto.fromdate,
+          todate: createReservationDto.todate,
+          no_of_rooms: createReservationDto.no_of_rooms,
+        },
+      )
+      .pipe()
+      .subscribe();
+
+    console.log(isAvailable);
+
+    // return this.reservationRepo.create({
+    //   ...createReservationDto,
+    //   user: userId,
+    // });
   }
 
   findAllByUser(userId: string) {

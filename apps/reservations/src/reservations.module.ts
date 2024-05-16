@@ -4,7 +4,7 @@ import { ReservationsService } from './reservations.service';
 import { DatabaseModule } from '@app/shared';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import AuthMSConfig from '@app/shared/config/microservice/authconfig';
+import RabbitMQConfig from '@app/shared/config/microservice/queue.config';
 import * as Joi from 'joi';
 import {
   ReservationsDocument,
@@ -27,7 +27,7 @@ import {
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: 'apps/reservations/.env',
-      load: [AuthMSConfig],
+      load: [RabbitMQConfig],
       validationSchema: Joi.object({
         MONGODB_URL: Joi.string().required(),
         HTTP_PORT: Joi.string().required(),
@@ -46,6 +46,12 @@ import {
         inject: [ConfigService],
         useFactory: (configService: ConfigService) =>
           configService.getOrThrow('authconfig'),
+      },
+      {
+        name: SERVICE_NAMES.PRICING,
+        inject: [ConfigService],
+        useFactory: (configService) =>
+          configService.getOrThrow('pricingconfig'),
       },
     ]),
   ],

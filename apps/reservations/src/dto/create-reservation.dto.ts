@@ -1,21 +1,14 @@
 import { Type } from 'class-transformer';
-import {
-  // IsDate,
-  // IsISO8601,
-  IsNumber,
-  IsOptional,
-  IsString,
-  Min,
-} from 'class-validator';
+import { IsDate, IsNumber, IsOptional, IsString, Min } from 'class-validator';
 
 export class CreateReservationDto {
-  // @IsISO8601()
   @Type(() => Date)
-  fromdate: Date;
-
-  // @IsISO8601()
-  @Type(() => Date)
+  @IsDate()
   todate: Date;
+
+  @Type(() => Date)
+  @IsDate()
+  fromdate: Date;
 
   @IsNumber()
   @Min(1)

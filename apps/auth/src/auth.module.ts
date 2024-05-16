@@ -8,7 +8,7 @@ import * as Joi from 'joi';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { JwtRefreshStrategy } from './strategies/jwt-rt.strategy';
-import AuthMSConfig from '@app/shared/config/microservice/authconfig';
+import RabbitMQConfig from '@app/shared/config/microservice/queue.config';
 
 @Module({
   imports: [
@@ -16,7 +16,7 @@ import AuthMSConfig from '@app/shared/config/microservice/authconfig';
     ConfigModule.forRoot({
       envFilePath: 'apps/auth/.env',
       isGlobal: true,
-      load: [AuthMSConfig],
+      load: [RabbitMQConfig],
       validationSchema: Joi.object({
         MONGODB_URL: Joi.string().required(),
         HTTP_PORT: Joi.string().required(),
