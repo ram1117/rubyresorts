@@ -12,22 +12,25 @@ export class ReservationsService {
     @Inject(SERVICE_NAMES.PRICING) private pricingService: ClientProxy,
   ) {}
 
-  async create(createReservationDto: CreateReservationDto) {
-    createReservationDto.fromdate.setUTCHours(0, 0, 0, 0);
-
-    const isAvailable = this.pricingService
+  async findAvailability(createReservationDto: CreateReservationDto) {
+    return this.pricingService
       .send(
         { cmd: SERVICE_PATTERNS.PRICING },
         {
           fromdate: createReservationDto.fromdate,
           todate: createReservationDto.todate,
           no_of_rooms: createReservationDto.no_of_rooms,
+          roomtype: createReservationDto.roomtype,
         },
       )
       .pipe()
-      .subscribe();
+      .subscribe(console.log);
+  }
 
-    console.log(isAvailable);
+  async create(createReservationDto: CreateReservationDto) {
+    createReservationDto.fromdate.setUTCHours(0, 0, 0, 0);
+
+    // console.log(isAvailable);
 
     // return this.reservationRepo.create({
     //   ...createReservationDto,

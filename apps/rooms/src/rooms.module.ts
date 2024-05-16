@@ -9,11 +9,14 @@ import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { AmenityDocument, AmenitySchema } from './model/amenity.model';
 import { SeederService } from './seeder.service';
-import { PriceDocument, PriceSchema } from './model/price.model';
+import {
+  PriceDocument,
+  PriceSchema,
+} from '../../pricing/src/model/price.model';
 import {
   RoomInventoryDocument,
   RoomInventorySchema,
-} from './model/room_inventory.model';
+} from 'apps/pricing/src/model/room_inventory.model';
 
 @Module({
   imports: [

@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { RoomTypeDocument } from './room_type.model';
+import { RoomTypeDocument } from 'apps/rooms/src/model/room_type.model';
 import { Types } from 'mongoose';
 import { AbstractDocument } from '@app/shared';
 
@@ -14,7 +14,7 @@ export class RoomInventoryDocument extends AbstractDocument {
   @Prop({ default: 0 })
   booked_rooms: number;
 
-  @Prop({ type: Types.ObjectId, ref: 'RoomTypeDocument' })
+  @Prop({ type: Types.ObjectId, ref: RoomTypeDocument.name })
   room_type: RoomTypeDocument;
 }
 

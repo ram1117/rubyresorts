@@ -25,9 +25,9 @@ export class ReservationsController {
   @Post()
   create(
     @Body() createReservationDto: CreateReservationDto,
-    @CurrentUser() user: any,
+    // @CurrentUser() user: any,
   ) {
-    return this.reservationsService.create(createReservationDto, user._id);
+    return this.reservationsService.create(createReservationDto);
   }
 
   @Get('all')
