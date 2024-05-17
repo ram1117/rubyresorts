@@ -4,7 +4,7 @@ export enum QUEUE_NAMES {
   AUTH = 'auth_queue',
   PRICING = 'price_queue',
   PAYMENT = 'payment_queue',
-  NOTIFICATION = 'notification_queue',
+  MAILER = 'mailer_queue',
 }
 
 export default function RabbitMQConfig() {
@@ -30,11 +30,11 @@ export default function RabbitMQConfig() {
         queue: QUEUE_NAMES.PAYMENT,
       },
     },
-    notificationconfig: {
+    mailerconfig: {
       transport: Transport.RMQ,
       options: {
         urls: [process.env.RABBITMQ_URL],
-        queue: QUEUE_NAMES.NOTIFICATION,
+        queue: QUEUE_NAMES.MAILER,
       },
     },
   };

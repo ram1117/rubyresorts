@@ -4,6 +4,7 @@ import { PaymentsRepository } from './payments.repository';
 import { InjectModel } from '@nestjs/mongoose';
 import { ReservationsDocument } from 'apps/reservations/src/models/reservations.model';
 import { Model } from 'mongoose';
+import { RESERVATION_STATUS } from '@app/shared/constants';
 
 @Injectable()
 export class PaymentsService {
@@ -21,7 +22,7 @@ export class PaymentsService {
 
     return this.reservationModel.findByIdAndUpdate(data.reservation_id, {
       invoice,
-      status: 'reserved',
+      status: RESERVATION_STATUS.RESERVE,
     });
   }
 }

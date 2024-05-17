@@ -61,6 +61,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/payments/tsconfig.app.json"
       }
+    },
+    "mailer": {
+      "type": "application",
+      "root": "apps/mailer",
+      "entryFile": "main",
+      "sourceRoot": "apps/mailer/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/mailer/tsconfig.app.json"
+      }
     }
   },
   "monorepo": true,

@@ -10,3 +10,9 @@ export enum SERVICE_PATTERNS {
   INVENTORY = 'update_inventory',
   PAYMENT = 'create_payment',
 }
+
+export enum RESERVATION_STATUS {
+  PENDING = 'payment pending',
+  RESERVE = 'reserved',
+  CANCEL = 'cancelled',
+}

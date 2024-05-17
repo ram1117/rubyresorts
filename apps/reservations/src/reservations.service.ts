@@ -6,7 +6,11 @@ import {
 } from '@nestjs/common';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { ReservationsRepository } from './reservations.repoistory';
-import { SERVICE_NAMES, SERVICE_PATTERNS } from '@app/shared/constants';
+import {
+  RESERVATION_STATUS,
+  SERVICE_NAMES,
+  SERVICE_PATTERNS,
+} from '@app/shared/constants';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { Types } from 'mongoose';
@@ -54,7 +58,7 @@ export class ReservationsService {
       ...createReservationDto,
       user: new Types.ObjectId(userId),
       total_price: availability.grand,
-      status: 'payment pending',
+      status: RESERVATION_STATUS.PENDING,
       roomtype: new Types.ObjectId(createReservationDto.roomtype),
       invoice: null,
     });
@@ -92,7 +96,7 @@ export class ReservationsService {
 
   async update(_id: string) {
     const reservation = await this.reservationRepo.findById(_id);
-    if (reservation.status !== 'cancelled')
+    if (reservation.status !== RESERVATION_STATUS.CANCEL)
       this.pricingService.emit(
         { cmd: SERVICE_PATTERNS.INVENTORY },
         {
@@ -104,7 +108,9 @@ export class ReservationsService {
         },
       );
 
-    return this.reservationRepo.findAndUpdateById(_id, { status: 'cancelled' });
+    return this.reservationRepo.findAndUpdateById(_id, {
+      status: RESERVATION_STATUS.CANCEL,
+    });
   }
 
   async updatePayment(data: UpdatePaymentDto) {
