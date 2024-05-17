@@ -11,6 +11,7 @@ import {
   ReservationsDocument,
   ReservationsSchema,
 } from 'apps/reservations/src/models/reservations.model';
+import { PaymentsRepository } from './payments.repository';
 
 @Module({
   imports: [
@@ -30,6 +31,6 @@ import {
     ]),
   ],
   controllers: [PaymentsController],
-  providers: [PaymentsService],
+  providers: [PaymentsService, PaymentsRepository],
 })
 export class PaymentsModule {}

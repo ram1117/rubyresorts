@@ -1,13 +1,13 @@
 import { AbstractDocument } from '@app/shared';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
-@Schema()
+@Schema({ versionKey: false, timestamps: true })
 export class InvoiceDocoment extends AbstractDocument {
   @Prop()
   payment_id: string;
 
   @Prop()
-  total: string;
+  total: number;
 }
 
 export const InvoiceSchema = SchemaFactory.createForClass(InvoiceDocoment);
