@@ -35,8 +35,9 @@ services:
       - '27017:27017'
 
   rabbitmq:
-    image: rabbitmq
+    image: rabbitmq:3-management
     ports:
       - '5672:5672'
+      - '15672:15672'
 volumes:
   mongo_data:

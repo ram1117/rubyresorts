@@ -1,18 +1,14 @@
 import { NestFactory } from '@nestjs/core';
-import { AuthModule } from './auth.module';
+import { PricingModule } from './pricing.module';
 import { ConfigService } from '@nestjs/config';
 import { ValidationPipe } from '@nestjs/common';
-import * as cookieparser from 'cookie-parser';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AuthModule);
+  const app = await NestFactory.create(PricingModule);
   const configService = app.get(ConfigService);
-
-  app.use(cookieparser());
-  app.connectMicroservice(configService.getOrThrow('authconfig'));
-
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
-  app.startAllMicroservices();
+  app.connectMicroservice(configService.getOrThrow('pricingconfig'));
   await app.listen(configService.get('HTTP_PORT'));
+  app.startAllMicroservices();
 }
 bootstrap();

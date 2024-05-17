@@ -29,6 +29,12 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
     return await this.model.find().sort(sortBy).lean<TDocument>(true);
   }
 
+  async findOneByFilter(
+    filterQuery: FilterQuery<TDocument>,
+  ): Promise<TDocument> {
+    return await this.model.findOne(filterQuery);
+  }
+
   async findManyByFilter(
     filterQuery: FilterQuery<TDocument>,
   ): Promise<TDocument[]> {
@@ -49,8 +55,16 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
       console.error('Document with given ID not found');
       throw new NotFoundException('Document not found');
     }
-
     return document;
+  }
+
+  async updateMany(
+    filterQuery: FilterQuery<TDocument>,
+    updateData: UpdateQuery<TDocument>,
+  ): Promise<TDocument[]> {
+    return await this.model
+      .updateMany(filterQuery, updateData)
+      .lean<TDocument[]>();
   }
 
   async findAndDeleteById(_id: string) {

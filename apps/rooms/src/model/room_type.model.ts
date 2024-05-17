@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { AmenityDocument } from './amenity.model';
 import { Types } from 'mongoose';
-import { PriceDocument } from './price.model';
+import { PriceDocument } from '../../../pricing/src/model/price.model';
 import { AbstractDocument } from '@app/shared';
 
 @Schema({ versionKey: false })

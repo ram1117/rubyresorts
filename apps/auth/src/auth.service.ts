@@ -79,7 +79,7 @@ export class AuthService {
   }
 
   async sendOtp(email: string) {
-    const user = await this.userService.find(email);
-    console.log(user);
+    // const user = await this.userService.find(email);
+    return { message: `OTP sent to ${email} ` };
   }
 }

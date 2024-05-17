@@ -10,10 +10,12 @@ import {
 import { AuthService } from './auth.service';
 import { SigninDto } from './users/dtos/signin.dto';
 import { JwtAuthGuard } from './guards/jwtauth.guard';
-import { CurrentUser } from './decorators/current-user.decorator';
+import { CurrentUser } from '../../../libs/shared/src/decorators/current-user.decorator';
 import { JwtRefreshGuard } from './guards/jwtrefresh.guard';
 import { CreateUserDto } from './users/dtos/create_user.dto';
 import { ForgotPasswordDto } from './users/dtos/forgot_pwd.dto';
+import { MessagePattern } from '@nestjs/microservices';
+import { SERVICE_PATTERNS } from '@app/shared/constants';
 
 @Controller('auth')
 export class AuthController {
@@ -39,7 +41,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async signout(@CurrentUser() user: any) {
     await this.authService.signout(user._id.toString());
-    return { message: 'signin in successful' };
+    return { message: 'signout successful' };
   }
 
   @UseGuards(JwtRefreshGuard)
@@ -56,5 +58,11 @@ export class AuthController {
   @Post('forgotpassword')
   async forgotpassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
     return this.authService.sendOtp(forgotPasswordDto.email);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @MessagePattern({ cmd: SERVICE_PATTERNS.AUTH })
+  authenticate(@CurrentUser() user: any) {
+    return user;
   }
 }

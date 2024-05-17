@@ -34,6 +34,24 @@
       "compilerOptions": {
         "tsConfigPath": "apps/auth/tsconfig.app.json"
       }
+    },
+    "reservations": {
+      "type": "application",
+      "root": "apps/reservations",
+      "entryFile": "main",
+      "sourceRoot": "apps/reservations/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/reservations/tsconfig.app.json"
+      }
+    },
+    "pricing": {
+      "type": "application",
+      "root": "apps/pricing",
+      "entryFile": "main",
+      "sourceRoot": "apps/pricing/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/pricing/tsconfig.app.json"
+      }
     }
   },
   "monorepo": true,

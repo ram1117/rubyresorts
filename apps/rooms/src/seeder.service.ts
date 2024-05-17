@@ -1,11 +1,11 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { RoomTypeDocument } from './model/room_type.model';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import { AmenityDocument } from './model/amenity.model';
 import { AmenitiesData, RoomTypesData, PriceData } from './seeders';
-import { PriceDocument } from './model/price.model';
-import { RoomInventoryDocument } from './model/room_inventory.model';
+import { PriceDocument } from '../../pricing/src/model/price.model';
+import { RoomInventoryDocument } from 'apps/pricing/src/model/room_inventory.model';
 import { eachDayOfInterval, add } from 'date-fns';
 
 @Injectable()
@@ -51,7 +51,6 @@ export class SeederService implements OnApplicationBootstrap {
       toDate.setHours(12, 0, 0, 0);
       const dates = eachDayOfInterval({ start: fromDate, end: toDate });
       const inventoryData = dates.map((date) => ({
-        _id: new Types.ObjectId(),
         date,
         available_rooms: created_room.total,
         room_type: created_room._id,
