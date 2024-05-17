@@ -10,12 +10,14 @@ import { SERVICE_NAMES, SERVICE_PATTERNS } from '@app/shared/constants';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { Types } from 'mongoose';
+import { UpdatePaymentDto } from './dto/update-payment.dto';
 
 @Injectable()
 export class ReservationsService {
   constructor(
     private readonly reservationRepo: ReservationsRepository,
     @Inject(SERVICE_NAMES.PRICING) private pricingService: ClientProxy,
+    @Inject(SERVICE_NAMES.PAYMENT) private paymentService: ClientProxy,
   ) {}
 
   findAvailability(createReservationDto: CreateReservationDto) {
@@ -48,6 +50,20 @@ export class ReservationsService {
       );
     }
 
+    const reservation = await this.reservationRepo.create({
+      ...createReservationDto,
+      user: new Types.ObjectId(userId),
+      total_price: availability.grand,
+      status: 'payment pending',
+      roomtype: new Types.ObjectId(createReservationDto.roomtype),
+    });
+
+    if (!reservation) {
+      throw new UnprocessableEntityException(
+        'Reservation failed. Please try again later',
+      );
+    }
+
     this.pricingService.emit(
       { cmd: SERVICE_PATTERNS.INVENTORY },
       {
@@ -58,13 +74,7 @@ export class ReservationsService {
         todate: createReservationDto.todate,
       },
     );
-    return this.reservationRepo.create({
-      ...createReservationDto,
-      user: new Types.ObjectId(userId),
-      total_price: availability.grand,
-      status: 'payment pending',
-      roomtype: new Types.ObjectId(createReservationDto.roomtype),
-    });
+    return reservation;
   }
 
   findAllByUser(userId: string) {
@@ -94,5 +104,13 @@ export class ReservationsService {
       );
 
     return this.reservationRepo.findAndUpdateById(_id, { status: 'cancelled' });
+  }
+
+  async updatePayment(data: UpdatePaymentDto) {
+    const confirmation = await this.paymentService.send(
+      { cmd: SERVICE_PATTERNS.PAYMENT },
+      data,
+    );
+    console.log(await lastValueFrom(confirmation));
   }
 }

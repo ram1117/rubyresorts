@@ -3,6 +3,8 @@ import { Transport } from '@nestjs/microservices';
 export enum QUEUE_NAMES {
   AUTH = 'auth_queue',
   PRICING = 'price_queue',
+  PAYMENT = 'payment_queue',
+  NOTIFICATION = 'notification_queue',
 }
 
 export default function RabbitMQConfig() {
@@ -19,6 +21,20 @@ export default function RabbitMQConfig() {
       options: {
         urls: [process.env.RABBITMQ_URL],
         queue: QUEUE_NAMES.PRICING,
+      },
+    },
+    paymentconfig: {
+      transport: Transport.RMQ,
+      options: {
+        urls: [process.env.RABBITMQ_URL],
+        queue: QUEUE_NAMES.PAYMENT,
+      },
+    },
+    notificationconfig: {
+      transport: Transport.RMQ,
+      options: {
+        urls: [process.env.RABBITMQ_URL],
+        queue: QUEUE_NAMES.NOTIFICATION,
       },
     },
   };
