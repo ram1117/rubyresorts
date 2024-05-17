@@ -1,9 +1,15 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { ReservationsRepository } from './reservations.repoistory';
 import { SERVICE_NAMES, SERVICE_PATTERNS } from '@app/shared/constants';
 import { ClientProxy } from '@nestjs/microservices';
-// import { map, pipe, tap } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
+import { Types } from 'mongoose';
 
 @Injectable()
 export class ReservationsService {
@@ -12,30 +18,53 @@ export class ReservationsService {
     @Inject(SERVICE_NAMES.PRICING) private pricingService: ClientProxy,
   ) {}
 
-  async findAvailability(createReservationDto: CreateReservationDto) {
-    return this.pricingService
-      .send(
-        { cmd: SERVICE_PATTERNS.PRICING },
-        {
-          fromdate: createReservationDto.fromdate,
-          todate: createReservationDto.todate,
-          no_of_rooms: createReservationDto.no_of_rooms,
-          roomtype: createReservationDto.roomtype,
-        },
-      )
-      .pipe()
-      .subscribe(console.log);
+  findAvailability(createReservationDto: CreateReservationDto) {
+    const availability = this.pricingService.send(
+      { cmd: SERVICE_PATTERNS.PRICING },
+      {
+        fromdate: createReservationDto.fromdate,
+        todate: createReservationDto.todate,
+        no_of_rooms: createReservationDto.no_of_rooms,
+        roomtype: createReservationDto.roomtype,
+      },
+    );
+    return lastValueFrom(availability);
   }
 
-  async create(createReservationDto: CreateReservationDto) {
+  async create(createReservationDto: CreateReservationDto, userId: string) {
     createReservationDto.fromdate.setUTCHours(0, 0, 0, 0);
 
-    // console.log(isAvailable);
+    const availability = await this.findAvailability(createReservationDto);
 
-    // return this.reservationRepo.create({
-    //   ...createReservationDto,
-    //   user: userId,
-    // });
+    if (!availability) {
+      throw new UnprocessableEntityException(
+        'Unable to book now. Please try again later',
+      );
+    }
+
+    if (!availability.available) {
+      throw new NotFoundException(
+        'Not enough rooms available, please try different dates',
+      );
+    }
+
+    this.pricingService.emit(
+      { cmd: SERVICE_PATTERNS.INVENTORY },
+      {
+        status: 'create',
+        rooms_count: createReservationDto.no_of_rooms,
+        room_type: createReservationDto.roomtype,
+        fromdate: createReservationDto.fromdate,
+        todate: createReservationDto.todate,
+      },
+    );
+    return this.reservationRepo.create({
+      ...createReservationDto,
+      user: new Types.ObjectId(userId),
+      total_price: availability.grand,
+      status: 'payment pending',
+      roomtype: new Types.ObjectId(createReservationDto.roomtype),
+    });
   }
 
   findAllByUser(userId: string) {
@@ -50,7 +79,20 @@ export class ReservationsService {
     return this.reservationRepo.findById(_id);
   }
 
-  update(_id: string) {
+  async update(_id: string) {
+    const reservation = await this.reservationRepo.findById(_id);
+    if (reservation.status !== 'cancelled')
+      this.pricingService.emit(
+        { cmd: SERVICE_PATTERNS.INVENTORY },
+        {
+          status: 'cancel',
+          rooms_count: reservation.no_of_rooms,
+          room_type: reservation.roomtype,
+          fromdate: reservation.fromdate,
+          todate: reservation.todate,
+        },
+      );
+
     return this.reservationRepo.findAndUpdateById(_id, { status: 'cancelled' });
   }
 }

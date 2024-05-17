@@ -30,18 +30,16 @@ export class SeederService implements OnApplicationBootstrap {
     this.roomInventoryModel.collection.deleteMany();
 
     const amenities = await this.amenityModel.create(AmenitiesData);
-    // const prices = await this.priceModel.create(PriceData);
+    const prices = await this.priceModel.create(PriceData);
 
     RoomTypesData.forEach(async (room) => {
       const roomAmenities = amenities.filter((amenity) =>
         room.amenity_codes.includes(amenity.amenity_code),
       );
 
-      const price = PriceData.find(
+      const price = prices.find(
         (priceItem) => priceItem.room_name === room.name,
       );
-
-      console.log('****************************', price);
       const created_room = await this.roomtypeModel.create({
         ...room,
         amenities: roomAmenities,

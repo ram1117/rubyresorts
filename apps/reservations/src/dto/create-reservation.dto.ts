@@ -22,10 +22,6 @@ export class CreateReservationDto {
   @IsString()
   status: string;
 
-  @IsNumber()
-  @Min(1)
-  total_price: number;
-
   @IsString()
   roomtype: string;
 }

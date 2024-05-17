@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ReservationsDocument } from './models/reservations.model';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { AbstractRepository } from '@app/shared';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class ReservationsRepository extends AbstractRepository<ReservationsDocum
 
   async findAllByUserPopulated(userId: string) {
     return await this.reservationsModel
-      .find({ user: userId })
+      .find({ user: new Types.ObjectId(userId) })
       .lean<ReservationsDocument>(true)
       .populate('roomtype', ['_id', 'name']);
   }

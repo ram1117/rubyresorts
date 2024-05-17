@@ -25,10 +25,10 @@ export class ReservationsDocument extends AbstractDocument {
   total_price: number;
 
   @Prop({ type: Types.ObjectId, ref: UserDocument.name })
-  user: string;
+  user: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: RoomTypeDocument.name })
-  roomtype: string;
+  roomtype: Types.ObjectId;
 }
 
 export const ReservationsSchema =

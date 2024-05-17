@@ -5,6 +5,7 @@ import {
   Param,
   Patch,
   Post,
+  UnprocessableEntityException,
   UseGuards,
 } from '@nestjs/common';
 import { ReservationsService } from './reservations.service';
@@ -25,9 +26,14 @@ export class ReservationsController {
   @Post()
   create(
     @Body() createReservationDto: CreateReservationDto,
-    // @CurrentUser() user: any,
+    @CurrentUser() user: any,
   ) {
-    return this.reservationsService.create(createReservationDto);
+    if (createReservationDto.todate < createReservationDto.fromdate) {
+      throw new UnprocessableEntityException(
+        'to_date cannot come before from_date',
+      );
+    }
+    return this.reservationsService.create(createReservationDto, user._id);
   }
 
   @Get('all')
