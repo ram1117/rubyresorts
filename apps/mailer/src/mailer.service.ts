@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 import { join } from 'path';
 import { readFileSync } from 'fs';
@@ -15,6 +15,7 @@ enum MAIL_SUBJECT {
 
 @Injectable()
 export class MailerService {
+  private readonly logger = new Logger(MailerService.name);
   constructor(private readonly configService: ConfigService) {}
 
   mailTransporter() {
@@ -59,19 +60,12 @@ export class MailerService {
         break;
     }
 
-    await transporter.sendMail({
-      to: data.user.email,
-      subject,
-      html: this.generateTemplate(data),
-    });
-  }
-
-  async sendConfirmation(data: any) {
-    const transporter = this.mailTransporter();
-    await transporter.sendMail({
-      to: data.user.email,
-      subject: MAIL_SUBJECT.CONFIRMATION,
-      html: this.generateTemplate(data),
-    });
+    await transporter
+      .sendMail({
+        to: data.user.email,
+        subject,
+        html: this.generateTemplate(data),
+      })
+      .catch((err) => this.logger.error(err));
   }
 }
