@@ -20,9 +20,12 @@ export class PaymentsService {
       payment_id: data.payment_id,
     });
 
-    return this.reservationModel.findByIdAndUpdate(data.reservation_id, {
-      invoice,
-      status: RESERVATION_STATUS.RESERVE,
-    });
+    return this.reservationModel
+      .findByIdAndUpdate(data.reservation_id, {
+        invoice,
+        status: RESERVATION_STATUS.RESERVE,
+      })
+      .populate('user', ['_id', 'email', 'fullname'])
+      .lean<ReservationsDocument>(true);
   }
 }

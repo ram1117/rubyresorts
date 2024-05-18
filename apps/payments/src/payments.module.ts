@@ -12,6 +12,10 @@ import {
   ReservationsSchema,
 } from 'apps/reservations/src/models/reservations.model';
 import { PaymentsRepository } from './payments.repository';
+import {
+  UserDocument,
+  UserSchema,
+} from 'apps/auth/src/users/models/userdocument';
 
 @Module({
   imports: [
@@ -28,6 +32,7 @@ import { PaymentsRepository } from './payments.repository';
     MongooseModule.forFeature([
       { name: InvoiceDocoment.name, schema: InvoiceSchema },
       { name: ReservationsDocument.name, schema: ReservationsSchema },
+      { name: UserDocument.name, schema: UserSchema },
     ]),
   ],
   controllers: [PaymentsController],

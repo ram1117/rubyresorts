@@ -47,7 +47,11 @@ export class AuthService {
   async signin(signinDto: SigninDto, response: any) {
     const user = await this.userService.validateUser(signinDto);
 
-    const payload = { sub: user._id.toString(), role: user.role };
+    const payload = {
+      sub: user._id.toString(),
+      role: user.role,
+      email: user.email,
+    };
 
     const [accessToken, refreshToken] = await this.generateTokens(payload);
 

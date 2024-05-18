@@ -7,6 +7,7 @@ import {
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { ReservationsRepository } from './reservations.repoistory';
 import {
+  MAIL_TYPE,
   RESERVATION_STATUS,
   SERVICE_NAMES,
   SERVICE_PATTERNS,
@@ -15,13 +16,16 @@ import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { Types } from 'mongoose';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ReservationsService {
   constructor(
     private readonly reservationRepo: ReservationsRepository,
+    private readonly configService: ConfigService,
     @Inject(SERVICE_NAMES.PRICING) private pricingService: ClientProxy,
     @Inject(SERVICE_NAMES.PAYMENT) private paymentService: ClientProxy,
+    @Inject(SERVICE_NAMES.MAILER) private mailerService: ClientProxy,
   ) {}
 
   findAvailability(createReservationDto: CreateReservationDto) {
@@ -95,7 +99,7 @@ export class ReservationsService {
   }
 
   async update(_id: string) {
-    const reservation = await this.reservationRepo.findById(_id);
+    const reservation = await this.reservationRepo.findOnePopulated(_id);
     if (reservation.status !== RESERVATION_STATUS.CANCEL)
       this.pricingService.emit(
         { cmd: SERVICE_PATTERNS.INVENTORY },
@@ -108,16 +112,43 @@ export class ReservationsService {
         },
       );
 
-    return this.reservationRepo.findAndUpdateById(_id, {
-      status: RESERVATION_STATUS.CANCEL,
-    });
+    const updatedReservation = await this.reservationRepo.findAndUpdateById(
+      _id,
+      {
+        status: RESERVATION_STATUS.CANCEL,
+      },
+    );
+    this.mailerService.emit(
+      { cmd: SERVICE_PATTERNS.MAIL },
+      {
+        template: MAIL_TYPE.CANCEL,
+        user: reservation.user,
+        link: `${this.configService.get('CLIENT_URL')}/reservations/${reservation._id}`,
+      },
+    );
+
+    return updatedReservation;
   }
 
   async updatePayment(data: UpdatePaymentDto) {
-    const confirmation = await this.paymentService.send(
+    const paymentResponse = this.paymentService.send(
       { cmd: SERVICE_PATTERNS.PAYMENT },
       data,
     );
-    console.log(await lastValueFrom(confirmation));
+    const reservation = await lastValueFrom(paymentResponse);
+    if (!reservation) {
+      throw new UnprocessableEntityException(
+        'Unable to complete payment.Please contact customer support',
+      );
+    }
+    this.mailerService.emit(
+      { cmd: SERVICE_PATTERNS.MAIL },
+      {
+        template: MAIL_TYPE.CONFIRMATION,
+        user: reservation.user,
+        link: `${this.configService.get('CLIENT_URL')}/reservations/${reservation._id}`,
+      },
+    );
+    return reservation;
   }
 }

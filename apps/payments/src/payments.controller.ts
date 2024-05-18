@@ -9,7 +9,7 @@ export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 
   @MessagePattern({ cmd: SERVICE_PATTERNS.PAYMENT })
-  getHello(@Payload() payload: CreateInvoiceDto) {
+  createInvoice(@Payload() payload: CreateInvoiceDto) {
     return this.paymentsService.create(payload);
   }
 }

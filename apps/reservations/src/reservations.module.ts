@@ -59,6 +59,11 @@ import {
         useFactory: (configService) =>
           configService.getOrThrow('paymentconfig'),
       },
+      {
+        name: SERVICE_NAMES.MAILER,
+        inject: [ConfigService],
+        useFactory: (configService) => configService.getOrThrow('mailerconfig'),
+      },
     ]),
   ],
   controllers: [ReservationsController],

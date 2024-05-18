@@ -68,7 +68,9 @@
       "entryFile": "main",
       "sourceRoot": "apps/mailer/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/mailer/tsconfig.app.json"
+        "tsConfigPath": "apps/mailer/tsconfig.app.json",
+        "assets": ["**/*.hbs", "**/*.jpeg", "**/*.css"],
+        "watchAssets": true
       }
     }
   },
