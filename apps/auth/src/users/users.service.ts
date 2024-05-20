@@ -31,6 +31,8 @@ export class UsersService {
       verified: false,
       role: 'user',
       password: await bcrypt.hash(createUserDto.password, 10),
+      hashedRT: '',
+      otp: '',
     });
   }
 

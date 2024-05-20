@@ -6,7 +6,7 @@ import RabbitMQConfig from '@app/shared/config/microservice/queue.config';
 import * as Joi from 'joi';
 import { DatabaseModule } from '@app/shared';
 import { MongooseModule } from '@nestjs/mongoose';
-import { InvoiceDocoment, InvoiceSchema } from './models/invoice.model';
+import { InvoiceDocument, InvoiceSchema } from './models/invoice.model';
 import {
   ReservationsDocument,
   ReservationsSchema,
@@ -30,7 +30,7 @@ import {
     }),
     DatabaseModule,
     MongooseModule.forFeature([
-      { name: InvoiceDocoment.name, schema: InvoiceSchema },
+      { name: InvoiceDocument.name, schema: InvoiceSchema },
       { name: ReservationsDocument.name, schema: ReservationsSchema },
       { name: UserDocument.name, schema: UserSchema },
     ]),

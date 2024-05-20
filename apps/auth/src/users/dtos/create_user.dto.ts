@@ -1,7 +1,6 @@
 import {
   IsEmail,
   IsMobilePhone,
-  IsOptional,
   IsString,
   IsStrongPassword,
   MinLength,
@@ -27,12 +26,4 @@ export class CreateUserDto {
 
   @IsMobilePhone()
   mobile: string;
-
-  @IsOptional()
-  @IsString()
-  hashedRT: string;
-
-  @IsOptional()
-  @IsString()
-  otp: string;
 }

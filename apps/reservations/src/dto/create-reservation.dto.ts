@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsDate, IsNumber, IsOptional, IsString, Min } from 'class-validator';
+import { IsDate, IsNumber, IsString, Min } from 'class-validator';
 
 export class CreateReservationDto {
   @Type(() => Date)
@@ -17,10 +17,6 @@ export class CreateReservationDto {
   @IsNumber()
   @Min(1)
   guest_count: number;
-
-  @IsOptional()
-  @IsString()
-  status: string;
 
   @IsString()
   roomtype: string;
