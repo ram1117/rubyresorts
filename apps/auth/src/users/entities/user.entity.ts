@@ -22,6 +22,5 @@ export class UserEntity {
   fullname: string;
   verified: boolean;
   role: string;
-  address: string;
   mobile: string;
 }

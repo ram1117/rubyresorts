@@ -24,9 +24,6 @@ export class UserDocument extends AbstractDocument {
   role: string;
 
   @Prop()
-  address: string;
-
-  @Prop()
   mobile: string;
 
   @Prop({ default: null })
