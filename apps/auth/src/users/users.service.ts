@@ -9,6 +9,7 @@ import { CreateUserDto } from './dtos/create_user.dto';
 import * as bcrypt from 'bcrypt';
 import { SigninDto } from './dtos/signin.dto';
 import { UserEntity } from './entities/user.entity';
+import { UpdateUserDto } from './dtos/update_user.dto';
 
 @Injectable()
 export class UsersService {
@@ -33,6 +34,7 @@ export class UsersService {
       password: await bcrypt.hash(createUserDto.password, 10),
       hashedRT: '',
       otp: '',
+      otpExpiry: null,
     });
   }
 
@@ -45,7 +47,7 @@ export class UsersService {
     return this.userRepo.findOne({ email });
   }
 
-  update(_id: string, updateData: Partial<CreateUserDto>) {
+  update(_id: string, updateData: Partial<UpdateUserDto>) {
     return this.userRepo.findAndUpdateById(_id, updateData);
   }
 

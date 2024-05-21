@@ -1,10 +1,25 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { UsersService } from './users/users.service';
 import { SigninDto } from './users/dtos/signin.dto';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { hash, compare } from 'bcrypt';
 import { CreateUserDto } from './users/dtos/create_user.dto';
+import { OtpDto } from './users/dtos/otp.dto';
+import * as crypto from 'crypto';
+import * as bcrypt from 'bcrypt';
+import { ClientProxy } from '@nestjs/microservices';
+import {
+  MAIL_TYPE,
+  SERVICE_NAMES,
+  SERVICE_PATTERNS,
+} from '@app/shared/constants';
+import { addMinutes } from 'date-fns';
 
 @Injectable()
 export class AuthService {
@@ -12,6 +27,7 @@ export class AuthService {
     private readonly userService: UsersService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
+    @Inject(SERVICE_NAMES.MAILER) readonly emailerService: ClientProxy,
   ) {}
 
   async generateAccessToken(payload: any) {
@@ -56,7 +72,7 @@ export class AuthService {
     const [accessToken, refreshToken] = await this.generateTokens(payload);
     await this.updateRefreshToken(user._id.toString(), refreshToken);
 
-    return { access: accessToken, refresh: refreshToken };
+    return { access: accessToken, refresh: refreshToken, role: user.role };
   }
 
   async signup(createuserDto: CreateUserDto) {
@@ -80,7 +96,31 @@ export class AuthService {
   }
 
   async sendOtp(email: string) {
-    // const user = await this.userService.find(email);
-    return { message: `OTP sent to ${email} ` };
+    const user = await this.userService.find(email);
+
+    if (!user) {
+      throw new NotFoundException('Email not found');
+    }
+
+    const randomstring = crypto.randomBytes(3).toString('hex').toUpperCase();
+    const otp = await bcrypt.hash(randomstring.toLowerCase(), 10);
+    const otpExpiry = addMinutes(new Date(), 5);
+
+    await this.userService.update(user._id.toString(), { otp, otpExpiry });
+
+    this.emailerService.emit(
+      { cmd: SERVICE_PATTERNS.MAIL },
+      {
+        template: MAIL_TYPE.RESET,
+        code: randomstring,
+        user: { _id: user._id, email: user.email, fullname: user.fullname },
+      },
+    );
+    return { message: `OTP sent to registered Email` };
+  }
+
+  async validateOtp(otpDto: OtpDto) {
+    console.log(otpDto);
+    return { message: 'OTP verified' };
   }
 }

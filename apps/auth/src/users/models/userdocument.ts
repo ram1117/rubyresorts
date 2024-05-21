@@ -33,6 +33,10 @@ export class UserDocument extends AbstractDocument {
   @Prop({ default: null })
   @Exclude()
   otp: string;
+
+  @Prop({ default: null })
+  @Exclude()
+  otpExpiry: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(UserDocument);

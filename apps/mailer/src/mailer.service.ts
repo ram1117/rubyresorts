@@ -36,8 +36,13 @@ export class MailerService {
       join(__dirname, 'templates', data.template),
       'utf-8',
     );
+
     const template = handlebars.compile(templateFile);
-    const html = template({ name: data.user.fullname, link: data.link });
+    const html = template({
+      name: data.user.fullname,
+      link: data?.link,
+      code: data?.code,
+    });
     return html;
   }
 

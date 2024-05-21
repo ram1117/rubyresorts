@@ -1,6 +1,6 @@
 import { MAIL_TYPE } from '@app/shared/constants';
 import { Type } from 'class-transformer';
-import { IsEmail, IsString, ValidateNested } from 'class-validator';
+import { IsEmail, IsOptional, IsString, ValidateNested } from 'class-validator';
 
 class UserDto {
   @IsString()
@@ -21,6 +21,11 @@ export class PayloadDto {
   @ValidateNested()
   user: UserDto;
 
+  @IsOptional()
   @IsString()
   link: string;
+
+  @IsOptional()
+  @IsString()
+  code: string;
 }
