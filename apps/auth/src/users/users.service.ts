@@ -49,6 +49,10 @@ export class UsersService {
     return this.userRepo.findAndUpdateById(_id, updateData);
   }
 
+  updateRefreshToken(_id: string, hashedRT: { hashedRT: string | null }) {
+    return this.userRepo.findAndUpdateById(_id, hashedRT);
+  }
+
   async validateUser({ username, password }: SigninDto) {
     const user = await this.userRepo.findOne({ username });
     if (!user) {

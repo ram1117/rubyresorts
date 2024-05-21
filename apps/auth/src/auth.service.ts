@@ -37,14 +37,14 @@ export class AuthService {
   async updateRefreshToken(_id: string, refreshToken: string | null) {
     if (refreshToken) {
       const hashedRT = await hash(refreshToken, 10);
-      await this.userService.update(_id, { hashedRT });
+      await this.userService.updateRefreshToken(_id, { hashedRT });
       return;
     }
 
-    await this.userService.update(_id, { hashedRT: null });
+    await this.userService.updateRefreshToken(_id, { hashedRT: null });
   }
 
-  async signin(signinDto: SigninDto, response: any) {
+  async signin(signinDto: SigninDto) {
     const user = await this.userService.validateUser(signinDto);
 
     const payload = {
@@ -54,11 +54,9 @@ export class AuthService {
     };
 
     const [accessToken, refreshToken] = await this.generateTokens(payload);
-
-    response.cookie('Authentication', accessToken, { httpOnly: true });
-    response.cookie('Refresh', refreshToken, { httpOnly: true });
-
     await this.updateRefreshToken(user._id.toString(), refreshToken);
+
+    return { access: accessToken, refresh: refreshToken };
   }
 
   async signup(createuserDto: CreateUserDto) {
@@ -69,7 +67,7 @@ export class AuthService {
     await this.updateRefreshToken(_id, null);
   }
 
-  async refresh(id: string, refreshToken: string, response: any) {
+  async refresh(id: string, refreshToken: string) {
     const { _id, role, hashedRT } = await this.userService.findOne(id);
     const isToken = await compare(refreshToken, hashedRT);
 
@@ -78,8 +76,7 @@ export class AuthService {
     }
 
     const payload = { sub: _id, role };
-    const cookie = await this.generateAccessToken(payload);
-    response.cookie('Authentication', cookie, { httpOnly: true });
+    return await this.generateAccessToken(payload);
   }
 
   async sendOtp(email: string) {

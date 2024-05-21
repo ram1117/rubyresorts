@@ -14,11 +14,10 @@ import { UserDocument } from './models/userdocument';
 import MongooseSerializeInterceptor from '@app/shared/interceptors/mongoose-serializer.interceptor';
 
 @Controller('user')
+@UseGuards(JwtAuthGuard)
 @UseInterceptors(MongooseSerializeInterceptor(UserDocument))
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
-
-  @UseGuards(JwtAuthGuard)
   @Get()
   getUser(@CurrentUser() user: UserDocument) {
     return this.userService.findOne(user._id.toString());

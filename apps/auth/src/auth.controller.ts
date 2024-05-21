@@ -4,7 +4,6 @@ import {
   HttpCode,
   HttpStatus,
   Post,
-  Res,
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -28,12 +27,8 @@ export class AuthController {
 
   @Post('signin')
   @HttpCode(HttpStatus.OK)
-  async signin(
-    @Body() signinDto: SigninDto,
-    @Res({ passthrough: true }) res: any,
-  ) {
-    await this.authService.signin(signinDto, res);
-    return { message: 'signin in successful' };
+  async signin(@Body() signinDto: SigninDto) {
+    return await this.authService.signin(signinDto);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -47,12 +42,10 @@ export class AuthController {
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
   @HttpCode(HttpStatus.CREATED)
-  async refresh(
-    @CurrentUser() { sub, refreshToken }: any,
-    @Res({ passthrough: true }) response: Response,
-  ) {
-    await this.authService.refresh(sub, refreshToken, response);
-    return { message: 'Token refresh successful' };
+  async refresh(@CurrentUser() { sub, refreshToken }: any) {
+    const token = await this.authService.refresh(sub, refreshToken);
+
+    return { token };
   }
 
   @Post('forgotpassword')
