@@ -55,6 +55,12 @@ export class UsersService {
     return this.userRepo.findAndUpdateById(_id, updateData);
   }
 
+  async updatePassword(_id: string, updateData: { password: string }) {
+    return this.userRepo.findAndUpdateById(_id, {
+      password: await bcrypt.hash(updateData.password, 10),
+    });
+  }
+
   updateRefreshToken(_id: string, hashedRT: { hashedRT: string | null }) {
     return this.userRepo.findAndUpdateById(_id, hashedRT);
   }

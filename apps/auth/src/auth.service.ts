@@ -21,6 +21,7 @@ import {
   SERVICE_PATTERNS,
 } from '@app/shared/constants';
 import { addMinutes } from 'date-fns';
+import { UpdatePasswordDto } from './users/dtos/update_password.dto';
 
 @Injectable()
 export class AuthService {
@@ -150,5 +151,16 @@ export class AuthService {
       message: 'OTP verification successful',
       access: token,
     };
+  }
+
+  async updatePassword(_id: string, updatePasswordDto: UpdatePasswordDto) {
+    const update = await this.userService.updatePassword(
+      _id,
+      updatePasswordDto,
+    );
+    if (!update)
+      throw new UnprocessableEntityException('Unable to update password');
+
+    return { message: 'Password updated.' };
   }
 }
