@@ -51,6 +51,10 @@ export class UsersService {
     return this.userRepo.findAndUpdateById(_id, updateData);
   }
 
+  updateOtp(_id: string, updateData: { otp: string | null; otpExpiry: Date }) {
+    return this.userRepo.findAndUpdateById(_id, updateData);
+  }
+
   updateRefreshToken(_id: string, hashedRT: { hashedRT: string | null }) {
     return this.userRepo.findAndUpdateById(_id, hashedRT);
   }

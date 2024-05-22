@@ -3,6 +3,7 @@ import {
   Inject,
   Injectable,
   NotFoundException,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { UsersService } from './users/users.service';
 import { SigninDto } from './users/dtos/signin.dto';
@@ -106,7 +107,7 @@ export class AuthService {
     const otp = await bcrypt.hash(randomstring.toLowerCase(), 10);
     const otpExpiry = addMinutes(new Date(), 5);
 
-    await this.userService.update(user._id.toString(), { otp, otpExpiry });
+    await this.userService.updateOtp(user._id.toString(), { otp, otpExpiry });
 
     this.emailerService.emit(
       { cmd: SERVICE_PATTERNS.MAIL },
@@ -120,7 +121,34 @@ export class AuthService {
   }
 
   async validateOtp(otpDto: OtpDto) {
-    console.log(otpDto);
-    return { message: 'OTP verified' };
+    const user = await this.userService.find(otpDto.email);
+    if (user.otpExpiry < new Date())
+      throw new UnprocessableEntityException('OTP has expired');
+
+    const isValidOtp = await bcrypt.compare(otpDto.otp.toLowerCase(), user.otp);
+
+    if (!isValidOtp)
+      throw new UnprocessableEntityException('Wrong OTP entered');
+
+    const payload = {
+      sub: user._id.toString(),
+      role: user.role,
+      email: user.email,
+    };
+
+    const token = await this.jwtService.signAsync(payload, {
+      secret: this.configService.get('AT_JWT_SECRET'),
+      expiresIn: 180,
+    });
+
+    this.userService.updateOtp(user._id.toString(), {
+      otp: null,
+      otpExpiry: new Date(),
+    });
+
+    return {
+      message: 'OTP verification successful',
+      access: token,
+    };
   }
 }
