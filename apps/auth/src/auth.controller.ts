@@ -17,6 +17,7 @@ import { MessagePattern } from '@nestjs/microservices';
 import { SERVICE_PATTERNS } from '@app/shared/constants';
 import { OtpDto } from './users/dtos/otp.dto';
 import { UpdatePasswordDto } from './users/dtos/update_password.dto';
+import { VerifyEmailDto } from './users/dtos/verify_email.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -52,6 +53,17 @@ export class AuthController {
   @Post('forgotpassword')
   async forgotpassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
     return this.authService.sendOtp(forgotPasswordDto.email);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('sendverification')
+  async sendVerification(@CurrentUser() user: any) {
+    return this.authService.sendVerification(user._id);
+  }
+
+  @Post('verifyemail')
+  async verifyEmail(@Body() verifyEmailDto: VerifyEmailDto) {
+    return this.authService.verifyEmail(verifyEmailDto.token);
   }
 
   @UseGuards(JwtAuthGuard)

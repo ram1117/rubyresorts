@@ -38,9 +38,10 @@ export class MailerService {
     );
 
     const template = handlebars.compile(templateFile);
+
     const html = template({
       name: data.user.fullname,
-      link: data?.link,
+      link: `${this.configService.get('CLIENT_URL')}${data?.link}`,
       code: data?.code,
     });
     return html;

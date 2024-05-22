@@ -61,6 +61,10 @@ export class UsersService {
     });
   }
 
+  async updateVerification(_id: string) {
+    await this.userRepo.findAndUpdateById(_id, { verified: true });
+  }
+
   updateRefreshToken(_id: string, hashedRT: { hashedRT: string | null }) {
     return this.userRepo.findAndUpdateById(_id, hashedRT);
   }

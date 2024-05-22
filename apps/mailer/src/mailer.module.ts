@@ -17,6 +17,7 @@ import * as Joi from 'joi';
         GOOGLE_OAUTH_REFRESH_TOKEN: Joi.string().required(),
         SMTP_USER: Joi.string().required(),
         RABBITMQ_URL: Joi.string().required(),
+        CLIENT_URL: Joi.string().required(),
       }),
     }),
   ],

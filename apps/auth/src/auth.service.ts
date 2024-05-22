@@ -78,7 +78,10 @@ export class AuthService {
   }
 
   async signup(createuserDto: CreateUserDto) {
-    return await this.userService.create(createuserDto);
+    const user = await this.userService.create(createuserDto);
+
+    await this.sendVerification(user._id.toString());
+    return user;
   }
 
   async signout(_id: string) {
@@ -119,6 +122,48 @@ export class AuthService {
       },
     );
     return { message: `OTP sent to registered Email` };
+  }
+
+  async sendVerification(_id: string) {
+    const user = await this.userService.findOne(_id);
+    const payload = {
+      sub: _id,
+      email: user.email,
+    };
+
+    const verificationToken = await this.jwtService.signAsync(payload, {
+      secret: this.configService.get('AT_JWT_SECRET'),
+      expiresIn: '1d',
+    });
+
+    this.emailerService.emit(
+      { cmd: SERVICE_PATTERNS.MAIL },
+      {
+        template: MAIL_TYPE.VERIFY,
+        link: `/auth/verify?token=${verificationToken}`,
+        user: { _id, email: user.email, fullname: user.fullname },
+      },
+    );
+    return { message: `Verification link sent to Email` };
+  }
+
+  async verifyEmail(token: string) {
+    let payload: any;
+    try {
+      payload = await this.jwtService.verifyAsync(token, {
+        secret: this.configService.get('AT_JWT_SECRET'),
+        ignoreExpiration: false,
+      });
+    } catch (error) {
+      throw new UnprocessableEntityException(error.message);
+    }
+
+    if (!payload) {
+      throw new UnprocessableEntityException('JWT invalid or has expired');
+    }
+
+    await this.userService.updateVerification(payload.sub);
+    return { message: 'Email verification successful' };
   }
 
   async validateOtp(otpDto: OtpDto) {

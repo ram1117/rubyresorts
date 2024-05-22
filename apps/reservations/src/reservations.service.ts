@@ -123,7 +123,7 @@ export class ReservationsService {
       {
         template: MAIL_TYPE.CANCEL,
         user: reservation.user,
-        link: `${this.configService.get('CLIENT_URL')}/reservations/${reservation._id}`,
+        link: `/reservations/${reservation._id}`,
       },
     );
 
@@ -146,7 +146,7 @@ export class ReservationsService {
       {
         template: MAIL_TYPE.CONFIRMATION,
         user: reservation.user,
-        link: `${this.configService.get('CLIENT_URL')}/reservations/${reservation._id}`,
+        link: `/reservations/${reservation._id}`,
       },
     );
     return reservation;
