@@ -1,12 +1,12 @@
-import { Type } from 'class-transformer';
+import { Transform } from 'class-transformer';
 import { IsDate, IsNumber, IsString, Min } from 'class-validator';
 
 export class CreateReservationDto {
-  @Type(() => Date)
+  @Transform(({ value }) => new Date(value))
   @IsDate()
   todate: Date;
 
-  @Type(() => Date)
+  @Transform(({ value }) => new Date(value))
   @IsDate()
   fromdate: Date;
 

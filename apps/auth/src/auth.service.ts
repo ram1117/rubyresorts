@@ -126,6 +126,11 @@ export class AuthService {
 
   async sendVerification(_id: string) {
     const user = await this.userService.findOne(_id);
+
+    if (user.verified) {
+      throw new UnprocessableEntityException('Already verified');
+    }
+
     const payload = {
       sub: _id,
       email: user.email,

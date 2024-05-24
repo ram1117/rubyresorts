@@ -26,6 +26,9 @@ export class RoomTypeDocument extends AbstractDocument {
 
   @Prop()
   images: string[];
+
+  @Prop()
+  occupancy: number;
 }
 
 export const RoomTypeSchema = SchemaFactory.createForClass(RoomTypeDocument);

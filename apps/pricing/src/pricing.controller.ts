@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Post } from '@nestjs/common';
 import { PricingService } from './pricing.service';
 import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 import { SERVICE_PATTERNS } from '@app/shared/constants';
@@ -12,6 +12,13 @@ export class PricingController {
     private readonly pricingService: PricingService,
     private readonly inventoryService: InventoryService,
   ) {}
+
+  @Post('availability')
+  async checkAvailabilityClient(@Payload() payload: CheckAvailabilityDto) {
+    const available = await this.inventoryService.findMany(payload);
+    const prices = await this.pricingService.getPrice(payload);
+    return { available, prices };
+  }
 
   @MessagePattern({ cmd: SERVICE_PATTERNS.PRICING })
   async checkAvailability(@Payload() payload: CheckAvailabilityDto) {

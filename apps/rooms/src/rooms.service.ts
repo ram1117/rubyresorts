@@ -12,7 +12,7 @@ export class RoomsService {
   }
 
   findAll() {
-    return this.roomsRepo.findManySorted({ order: 'asc' });
+    return this.roomsRepo.findBySelect({ order: 'asc' });
   }
 
   findOne(id: string) {

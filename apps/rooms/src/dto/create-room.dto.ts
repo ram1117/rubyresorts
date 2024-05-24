@@ -22,5 +22,8 @@ export class CreateRoomDto {
   @IsArray()
   images: string[];
 
+  @IsNumber()
+  occupancy: number;
+
   price: PriceDocument;
 }
