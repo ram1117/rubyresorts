@@ -15,7 +15,7 @@ import {
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { Types } from 'mongoose';
-import { UpdatePaymentDto } from './dto/update-payment.dto';
+// import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -61,7 +61,7 @@ export class ReservationsService {
     const reservation = await this.reservationRepo.create({
       ...createReservationDto,
       user: new Types.ObjectId(userId),
-      total_price: availability.grand,
+      total_price: availability.prices.grand,
       status: RESERVATION_STATUS.PENDING,
       roomtype: new Types.ObjectId(createReservationDto.roomtype),
       invoice: null,
@@ -100,17 +100,20 @@ export class ReservationsService {
 
   async update(_id: string) {
     const reservation = await this.reservationRepo.findOnePopulated(_id);
-    if (reservation.status !== RESERVATION_STATUS.CANCEL)
-      this.pricingService.emit(
-        { cmd: SERVICE_PATTERNS.INVENTORY },
-        {
-          status: 'cancel',
-          rooms_count: reservation.no_of_rooms,
-          room_type: reservation.roomtype,
-          fromdate: reservation.fromdate,
-          todate: reservation.todate,
-        },
-      );
+    if (reservation.status === RESERVATION_STATUS.CANCEL) {
+      throw new UnprocessableEntityException('Reservation already cancelled');
+    }
+
+    this.pricingService.emit(
+      { cmd: SERVICE_PATTERNS.INVENTORY },
+      {
+        status: 'cancel',
+        rooms_count: reservation.no_of_rooms,
+        room_type: reservation.roomtype._id.toString(),
+        fromdate: reservation.fromdate,
+        todate: reservation.todate,
+      },
+    );
 
     const updatedReservation = await this.reservationRepo.findAndUpdateById(
       _id,
@@ -118,37 +121,38 @@ export class ReservationsService {
         status: RESERVATION_STATUS.CANCEL,
       },
     );
+
     this.mailerService.emit(
       { cmd: SERVICE_PATTERNS.MAIL },
       {
         template: MAIL_TYPE.CANCEL,
         user: reservation.user,
-        link: `/reservations/${reservation._id}`,
+        link: `/reservations`,
       },
     );
 
     return updatedReservation;
   }
 
-  async updatePayment(data: UpdatePaymentDto) {
-    const paymentResponse = this.paymentService.send(
-      { cmd: SERVICE_PATTERNS.PAYMENT },
-      data,
-    );
-    const reservation = await lastValueFrom(paymentResponse);
-    if (!reservation) {
-      throw new UnprocessableEntityException(
-        'Unable to complete payment.Please contact customer support',
-      );
-    }
-    this.mailerService.emit(
-      { cmd: SERVICE_PATTERNS.MAIL },
-      {
-        template: MAIL_TYPE.CONFIRMATION,
-        user: reservation.user,
-        link: `/reservations/${reservation._id}`,
-      },
-    );
-    return reservation;
-  }
+  // async updatePayment(data: UpdatePaymentDto) {
+  //   const paymentResponse = this.paymentService.send(
+  //     { cmd: SERVICE_PATTERNS.PAYMENT },
+  //     data,
+  //   );
+  //   const reservation = await lastValueFrom(paymentResponse);
+  //   if (!reservation) {
+  //     throw new UnprocessableEntityException(
+  //       'Unable to complete payment.Please contact customer support',
+  //     );
+  //   }
+  //   this.mailerService.emit(
+  //     { cmd: SERVICE_PATTERNS.MAIL },
+  //     {
+  //       template: MAIL_TYPE.CONFIRMATION,
+  //       user: reservation.user,
+  //       link: `/reservations/${reservation._id}`,
+  //     },
+  //   );
+  //   return reservation;
+  // }
 }

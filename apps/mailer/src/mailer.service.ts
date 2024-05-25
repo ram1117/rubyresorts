@@ -1,4 +1,8 @@
-import { Injectable, Logger } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 import { join } from 'path';
 import { readFileSync } from 'fs';
@@ -19,16 +23,21 @@ export class MailerService {
   constructor(private readonly configService: ConfigService) {}
 
   mailTransporter() {
-    return nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        type: 'OAuth2',
-        user: this.configService.get('SMTP_USER'),
-        clientId: this.configService.get('GOOGLE_OAUTH_CLIENT_ID'),
-        clientSecret: this.configService.get('GOOGLE_OAUTH_CLIENT_SECRET'),
-        refreshToken: this.configService.get('GOOGLE_OAUTH_REFRESH_TOKEN'),
-      },
-    });
+    try {
+      return nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          type: 'OAuth2',
+          user: this.configService.get('SMTP_USER'),
+          clientId: this.configService.get('GOOGLE_OAUTH_CLIENT_ID'),
+          clientSecret: this.configService.get('GOOGLE_OAUTH_CLIENT_SECRET'),
+          refreshToken: this.configService.get('GOOGLE_OAUTH_REFRESH_TOKEN'),
+        },
+      });
+    } catch (error) {
+      this.logger.error(error);
+      throw new UnprocessableEntityException('Unable to send Email');
+    }
   }
 
   generateTemplate(data: any) {

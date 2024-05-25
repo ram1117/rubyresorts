@@ -36,6 +36,7 @@
     "@nestjs/mongoose": "^10.0.6",
     "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "^10.0.0",
+    "@stripe/stripe-js": "^3.4.1",
     "@types/cookie-parser": "^1.4.7",
     "amqp-connection-manager": "^4.1.14",
     "amqplib": "^0.10.4",
@@ -48,11 +49,13 @@
     "handlebars": "^4.7.8",
     "joi": "^17.13.1",
     "mongoose": "^8.3.3",
+    "next": "^14.2.3",
     "nodemailer": "^6.9.13",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "stripe": "^15.8.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

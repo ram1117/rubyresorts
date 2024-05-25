@@ -1,15 +1,25 @@
 import { AbstractRepository } from '@app/shared';
 import { Injectable } from '@nestjs/common';
-import { InvoiceDocument } from './models/invoice.model';
+// import { InvoiceDocument } from './models/invoice.model';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
+import { PaymentDocument } from './models/payment.model';
 
 @Injectable()
-export class PaymentsRepository extends AbstractRepository<InvoiceDocument> {
+export class PaymentsRepository extends AbstractRepository<PaymentDocument> {
   constructor(
-    @InjectModel(InvoiceDocument.name)
-    readonly invoiceModel: Model<InvoiceDocument>,
+    @InjectModel(PaymentDocument.name)
+    readonly paymentModel: Model<PaymentDocument>,
   ) {
-    super(invoiceModel);
+    super(paymentModel);
+  }
+
+  async findOnePopulated(
+    filterQuery: FilterQuery<PaymentDocument>,
+  ): Promise<PaymentDocument> {
+    return await this.paymentModel
+      .find(filterQuery)
+      .lean<PaymentDocument>(true)
+      .populate('reservation', ['_id', 'total_price']);
   }
 }

@@ -43,6 +43,6 @@ export class PricingService {
     const perroom = perday * no_of_days;
     const grand = perroom * query.no_of_rooms;
 
-    return { perday, perroom, grand };
+    return { perday, perroom, grand, roomtype: query.roomtype };
   }
 }
