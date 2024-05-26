@@ -4,7 +4,7 @@ import { RoomTypeDocument } from './model/room_type.model';
 import { Model } from 'mongoose';
 import { AmenityDocument } from './model/amenity.model';
 import { AmenitiesData, RoomTypesData, PriceData } from './seeders';
-import { PriceDocument } from '../../pricing/src/model/price.model';
+import { PriceDocument } from '../../../libs/shared/src/models/price.model';
 import { RoomInventoryDocument } from 'apps/pricing/src/model/room_inventory.model';
 import { eachDayOfInterval, add } from 'date-fns';
 

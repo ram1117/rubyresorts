@@ -2,7 +2,9 @@ FROM node:alpine as development
 WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
-COPY . .
+COPY apps/auth apps/auth
+COPY libs libs
+COPY tsconfig.json tsconfig.json
 RUN npm run build
 
 FROM node:alpine as production

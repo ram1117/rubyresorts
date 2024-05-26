@@ -1,5 +1,5 @@
 import { AbstractRepository } from '@app/shared';
-import { RoomInventoryDocument } from './model/room_inventory.model';
+import { RoomInventoryDocument } from '../../../libs/shared/src/models/room_inventory.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';

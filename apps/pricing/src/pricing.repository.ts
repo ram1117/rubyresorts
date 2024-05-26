@@ -1,5 +1,5 @@
 import { AbstractRepository } from '@app/shared';
-import { PriceDocument } from './model/price.model';
+import { PriceDocument } from '../../../libs/shared/src/models/price.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';

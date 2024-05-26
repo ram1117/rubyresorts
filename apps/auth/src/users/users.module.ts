@@ -3,7 +3,7 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { DatabaseModule } from '../../../../libs/shared/src';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UserDocument, UserSchema } from './models/userdocument';
+import { UserDocument, UserSchema } from '@app/shared/models/userdocument';
 import { UserRepository } from './users.repository';
 
 @Module({

@@ -2,7 +2,9 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PaymentsRepository } from './payments.repository';
 import Stripe from 'stripe';
 import { ConfigService } from '@nestjs/config';
-import { ReservationsRepository } from 'apps/reservations/src/reservations.repoistory';
+import { InjectModel } from '@nestjs/mongoose';
+import { ReservationsDocument } from '@app/shared/models/reservations.model';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class PaymentsService {
@@ -16,11 +18,12 @@ export class PaymentsService {
   constructor(
     private readonly paymentsRepo: PaymentsRepository,
     private readonly configService: ConfigService,
-    private readonly reservationRepo: ReservationsRepository,
+    @InjectModel(ReservationsDocument.name)
+    readonly reservationsModel: Model<ReservationsDocument>,
   ) {}
 
   async createIntent(reservationId: string) {
-    const reservation = await this.reservationRepo.findById(reservationId);
+    const reservation = await this.reservationsModel.findById(reservationId);
 
     if (!reservation) {
       throw new NotFoundException('Reservation not found');
@@ -102,7 +105,7 @@ export class PaymentsService {
         if (!reservation) {
           this.logger.error('Reservation not found');
         }
-        this.reservationRepo.findAndUpdateById(
+        this.reservationsModel.findByIdAndUpdate(
           reservation.reservation._id.toString(),
           { status: 'Confirmed' },
         );

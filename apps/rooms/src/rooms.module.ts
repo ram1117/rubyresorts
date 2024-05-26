@@ -3,20 +3,20 @@ import { RoomsService } from './rooms.service';
 import { RoomsController } from './rooms.controller';
 import { DatabaseModule } from '@app/shared';
 import { MongooseModule } from '@nestjs/mongoose';
-import { RoomTypeDocument, RoomTypeSchema } from './model/room_type.model';
+import {
+  RoomTypeDocument,
+  RoomTypeSchema,
+} from '@app/shared/models/room_type.model';
 import { RoomTypeRepository } from './rooms.repository';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { AmenityDocument, AmenitySchema } from './model/amenity.model';
 import { SeederService } from './seeder.service';
-import {
-  PriceDocument,
-  PriceSchema,
-} from '../../pricing/src/model/price.model';
+import { PriceDocument, PriceSchema } from '@app/shared/models/price.model';
 import {
   RoomInventoryDocument,
   RoomInventorySchema,
-} from 'apps/pricing/src/model/room_inventory.model';
+} from '@app/shared/models/room_inventory.model';
 
 @Module({
   imports: [

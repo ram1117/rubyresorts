@@ -1,6 +1,6 @@
 import { AbstractDocument } from '@app/shared';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { UserDocument } from 'apps/auth/src/users/models/userdocument';
+import { UserDocument } from '@app/shared/models/userdocument';
 import { InvoiceDocument } from 'apps/payments/src/models/invoice.model';
 import { RoomTypeDocument } from 'apps/rooms/src/model/room_type.model';
 import { Types } from 'mongoose';
