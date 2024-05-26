@@ -9,6 +9,7 @@ import { CreateUserDto } from './dtos/create_user.dto';
 import * as bcrypt from 'bcrypt';
 import { SigninDto } from './dtos/signin.dto';
 import { UserEntity } from './entities/user.entity';
+import { UpdateUserDto } from './dtos/update_user.dto';
 
 @Injectable()
 export class UsersService {
@@ -31,6 +32,9 @@ export class UsersService {
       verified: false,
       role: 'user',
       password: await bcrypt.hash(createUserDto.password, 10),
+      hashedRT: '',
+      otp: '',
+      otpExpiry: null,
     });
   }
 
@@ -43,8 +47,26 @@ export class UsersService {
     return this.userRepo.findOne({ email });
   }
 
-  update(_id: string, updateData: Partial<CreateUserDto>) {
+  update(_id: string, updateData: Partial<UpdateUserDto>) {
     return this.userRepo.findAndUpdateById(_id, updateData);
+  }
+
+  updateOtp(_id: string, updateData: { otp: string | null; otpExpiry: Date }) {
+    return this.userRepo.findAndUpdateById(_id, updateData);
+  }
+
+  async updatePassword(_id: string, updateData: { password: string }) {
+    return this.userRepo.findAndUpdateById(_id, {
+      password: await bcrypt.hash(updateData.password, 10),
+    });
+  }
+
+  async updateVerification(_id: string) {
+    await this.userRepo.findAndUpdateById(_id, { verified: true });
+  }
+
+  updateRefreshToken(_id: string, hashedRT: { hashedRT: string | null }) {
+    return this.userRepo.findAndUpdateById(_id, hashedRT);
   }
 
   async validateUser({ username, password }: SigninDto) {

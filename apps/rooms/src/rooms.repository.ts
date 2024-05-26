@@ -8,8 +8,15 @@ import { InjectModel } from '@nestjs/mongoose';
 export class RoomTypeRepository extends AbstractRepository<RoomTypeDocument> {
   constructor(
     @InjectModel(RoomTypeDocument.name)
-    roomsModel: Model<RoomTypeDocument>,
+    readonly roomsModel: Model<RoomTypeDocument>,
   ) {
     super(roomsModel);
+  }
+
+  async findBySelect(sortBy: any) {
+    return await this.roomsModel
+      .find({}, { _id: 1, name: 1, images: 1, occupancy: 1 })
+      .sort(sortBy)
+      .lean<RoomTypeDocument>(true);
   }
 }

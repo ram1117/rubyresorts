@@ -1,7 +1,6 @@
 import {
   IsEmail,
   IsMobilePhone,
-  IsOptional,
   IsString,
   IsStrongPassword,
   MinLength,
@@ -16,23 +15,12 @@ export class CreateUserDto {
   password: string;
 
   @IsString()
-  @MinLength(8, { message: 'Should be atleast 8 characters' })
+  @MinLength(8, { message: 'username should be atleast 8 characters' })
   username: string;
 
   @IsString()
   fullname: string;
 
-  @IsString()
-  address: string;
-
   @IsMobilePhone()
   mobile: string;
-
-  @IsOptional()
-  @IsString()
-  hashedRT: string;
-
-  @IsOptional()
-  @IsString()
-  otp: string;
 }

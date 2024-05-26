@@ -52,6 +52,26 @@
       "compilerOptions": {
         "tsConfigPath": "apps/pricing/tsconfig.app.json"
       }
+    },
+    "payments": {
+      "type": "application",
+      "root": "apps/payments",
+      "entryFile": "main",
+      "sourceRoot": "apps/payments/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/payments/tsconfig.app.json"
+      }
+    },
+    "mailer": {
+      "type": "application",
+      "root": "apps/mailer",
+      "entryFile": "main",
+      "sourceRoot": "apps/mailer/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/mailer/tsconfig.app.json",
+        "assets": ["**/*.hbs", "**/*.jpeg", "**/*.css"],
+        "watchAssets": true
+      }
     }
   },
   "monorepo": true,

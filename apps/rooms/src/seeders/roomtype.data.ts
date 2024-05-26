@@ -6,6 +6,7 @@ export const RoomTypesData = [
     total: 30,
     amenity_codes: [1, 2, 3, 4],
     order: 5,
+    occupancy: 2,
     images: [
       'https://ggcfapdcaehqbchzsfqh.supabase.co/storage/v1/object/public/ruby_resorts/basic/basic1.jpg',
       'https://ggcfapdcaehqbchzsfqh.supabase.co/storage/v1/object/public/ruby_resorts/basic/basic2.jpg',
@@ -19,6 +20,7 @@ export const RoomTypesData = [
     total: 20,
     amenity_codes: [1, 2, 3, 4, 5],
     order: 4,
+    occupancy: 3,
     images: [
       'https://ggcfapdcaehqbchzsfqh.supabase.co/storage/v1/object/public/ruby_resorts/deluxe/deluxe1.jpg',
       'https://ggcfapdcaehqbchzsfqh.supabase.co/storage/v1/object/public/ruby_resorts/deluxe/deluxe2.jpg',
@@ -32,6 +34,7 @@ export const RoomTypesData = [
     total: 15,
     amenity_codes: [5, 6, 7, 8, 9, 10, 11, 12],
     order: 3,
+    occupancy: 4,
     images: [
       'https://ggcfapdcaehqbchzsfqh.supabase.co/storage/v1/object/public/ruby_resorts/suites/suite1.jpg',
       'https://ggcfapdcaehqbchzsfqh.supabase.co/storage/v1/object/public/ruby_resorts/suites/suiter2.jpg',
@@ -45,6 +48,7 @@ export const RoomTypesData = [
     total: 10,
     amenity_codes: [5, 6, 7, 8, 9, 10, 11, 12],
     order: 1,
+    occupancy: 6,
     images: [
       'https://ggcfapdcaehqbchzsfqh.supabase.co/storage/v1/object/public/ruby_resorts/villa/villa1.jpg',
       'https://ggcfapdcaehqbchzsfqh.supabase.co/storage/v1/object/public/ruby_resorts/villa/villa2.jpg',
@@ -58,6 +62,7 @@ export const RoomTypesData = [
     total: 4,
     amenity_codes: [5, 6, 7, 8, 9, 10, 11, 12],
     order: 2,
+    occupancy: 4,
     images: [
       'https://ggcfapdcaehqbchzsfqh.supabase.co/storage/v1/object/public/ruby_resorts/penthouse/penthouse1.jpg?t=2024-05-11T09%3A29%3A22.758Z',
       'https://ggcfapdcaehqbchzsfqh.supabase.co/storage/v1/object/public/ruby_resorts/penthouse/penthouse2.jpg',

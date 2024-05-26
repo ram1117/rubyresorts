@@ -24,9 +24,6 @@ export class UserDocument extends AbstractDocument {
   role: string;
 
   @Prop()
-  address: string;
-
-  @Prop()
   mobile: string;
 
   @Prop({ default: null })
@@ -36,6 +33,10 @@ export class UserDocument extends AbstractDocument {
   @Prop({ default: null })
   @Exclude()
   otp: string;
+
+  @Prop({ default: null })
+  @Exclude()
+  otpExpiry: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(UserDocument);

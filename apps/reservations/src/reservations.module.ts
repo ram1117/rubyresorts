@@ -53,6 +53,17 @@ import {
         useFactory: (configService) =>
           configService.getOrThrow('pricingconfig'),
       },
+      {
+        name: SERVICE_NAMES.PAYMENT,
+        inject: [ConfigService],
+        useFactory: (configService) =>
+          configService.getOrThrow('paymentconfig'),
+      },
+      {
+        name: SERVICE_NAMES.MAILER,
+        inject: [ConfigService],
+        useFactory: (configService) => configService.getOrThrow('mailerconfig'),
+      },
     ]),
   ],
   controllers: [ReservationsController],

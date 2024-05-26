@@ -18,10 +18,10 @@ export class UserEntity {
   @Exclude()
   otp: string | null;
 
+  email: string;
   username: string;
   fullname: string;
   verified: boolean;
   role: string;
-  address: string;
   mobile: string;
 }

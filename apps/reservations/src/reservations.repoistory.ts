@@ -13,6 +13,14 @@ export class ReservationsRepository extends AbstractRepository<ReservationsDocum
     super(reservationsModel);
   }
 
+  async findOnePopulated(id: string) {
+    return await this.reservationsModel
+      .findById(id)
+      .lean<ReservationsDocument>(true)
+      .populate('user', ['_id', 'fullname', 'email'])
+      .populate('roomtype', ['_id', 'name']);
+  }
+
   async findAllByUserPopulated(userId: string) {
     return await this.reservationsModel
       .find({ user: new Types.ObjectId(userId) })
@@ -25,6 +33,6 @@ export class ReservationsRepository extends AbstractRepository<ReservationsDocum
       .find()
       .lean<ReservationsDocument>(true)
       .populate('roomtype', ['_id', 'name'])
-      .populate('user', ['_id', 'fullname']);
+      .populate('user', ['_id', 'fullname', 'email']);
   }
 }

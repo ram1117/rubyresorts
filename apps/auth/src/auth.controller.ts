@@ -4,7 +4,6 @@ import {
   HttpCode,
   HttpStatus,
   Post,
-  Res,
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -16,6 +15,9 @@ import { CreateUserDto } from './users/dtos/create_user.dto';
 import { ForgotPasswordDto } from './users/dtos/forgot_pwd.dto';
 import { MessagePattern } from '@nestjs/microservices';
 import { SERVICE_PATTERNS } from '@app/shared/constants';
+import { OtpDto } from './users/dtos/otp.dto';
+import { UpdatePasswordDto } from './users/dtos/update_password.dto';
+import { VerifyEmailDto } from './users/dtos/verify_email.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -28,12 +30,8 @@ export class AuthController {
 
   @Post('signin')
   @HttpCode(HttpStatus.OK)
-  async signin(
-    @Body() signinDto: SigninDto,
-    @Res({ passthrough: true }) res: any,
-  ) {
-    await this.authService.signin(signinDto, res);
-    return { message: 'signin in successful' };
+  async signin(@Body() signinDto: SigninDto) {
+    return await this.authService.signin(signinDto);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -47,17 +45,39 @@ export class AuthController {
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
   @HttpCode(HttpStatus.CREATED)
-  async refresh(
-    @CurrentUser() { sub, refreshToken }: any,
-    @Res({ passthrough: true }) response: Response,
-  ) {
-    await this.authService.refresh(sub, refreshToken, response);
-    return { message: 'Token refresh successful' };
+  async refresh(@CurrentUser() { sub, refreshToken }: any) {
+    const token = await this.authService.refresh(sub, refreshToken);
+    return { token };
   }
 
   @Post('forgotpassword')
   async forgotpassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
     return this.authService.sendOtp(forgotPasswordDto.email);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('sendverification')
+  async sendVerification(@CurrentUser() user: any) {
+    return this.authService.sendVerification(user._id);
+  }
+
+  @Post('verifyemail')
+  async verifyEmail(@Body() verifyEmailDto: VerifyEmailDto) {
+    return this.authService.verifyEmail(verifyEmailDto.token);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('updatepassword')
+  async updatePassword(
+    @Body() updatePasswordDto: UpdatePasswordDto,
+    @CurrentUser() user: any,
+  ) {
+    return this.authService.updatePassword(user._id, updatePasswordDto);
+  }
+
+  @Post('submitotp')
+  async validateOtp(@Body() otpDto: OtpDto) {
+    return this.authService.validateOtp(otpDto);
   }
 
   @UseGuards(JwtAuthGuard)
