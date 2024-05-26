@@ -5,6 +5,7 @@ RUN npm install
 COPY apps/mailer apps/mailer
 COPY libs libs
 COPY tsconfig.json tsconfig.json
+RUN cd apps/mailer && npm install
 RUN npm run build
 
 FROM node:14-alpine as production
