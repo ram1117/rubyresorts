@@ -1,0 +1,8 @@
+"start:dev": "concurrently -c \"cyan.italic,red.italic,yellow.italic\" \"npm:dev-app*\"",
+    "dev-app-auth": "nest start --watch auth",
+    "dev-app-rooms": "nest start --watch rooms",
+    "dev-app-reservations": "nest start --watch reservations",
+    "dev-app-pricing": "nest start --watch pricing",
+    "dev-app-payments": "nest start --watch payments",
+    "dev-app-mailer": "nest start --watch mailer",
+    "start:debug": "nest start --debug --watch",

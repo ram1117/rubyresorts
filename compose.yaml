@@ -6,13 +6,14 @@ services:
   #     context: .
   #     dockerfile: ./apps/rooms/Dockerfile
   #     target: development
-  #   command: npm run start:dev auth
+  #   command: npm run start:dev rooms
   #   env_file:
   #     - ./apps/rooms/.env
   #   ports:
-  #     - '3000:3000'
+  #     - '3001:3001'
   #   volumes:
   #     - .:/usr/src/app
+
   # auth:
   #   build: 
   #     context: .
@@ -22,15 +23,65 @@ services:
   #   env_file:
   #     - ./apps/auth/.env
   #   ports:
-  #     - '3001:3001'
+  #     - '3002:3002'
+  #   volumes:
+  #     - .:/usr/src/app
+
+  # mailer:
+  #   build: 
+  #     context: .
+  #     dockerfile: ./apps/mailer/Dockerfile
+  #     target: development
+  #   command: npm run start:dev mailer
+  #   env_file:
+  #     - ./apps/mailer/.env
+  #   volumes:
+  #     - .:/usr/src/app
+
+  # payments:
+  #   build: 
+  #     context: .
+  #     dockerfile: ./apps/payments/Dockerfile
+  #     target: development
+  #   command: npm run start:dev payments
+  #   env_file:
+  #     - ./apps/payments/.env
+  #   ports:
+  #     - '3006:3006'
+  #   volumes:
+  #     - .:/usr/src/app
+
+  # pricing:
+  #   build: 
+  #     context: .
+  #     dockerfile: ./apps/pricing/Dockerfile
+  #     target: development
+  #   command: npm run start:dev pricing
+  #   env_file:
+  #     - ./apps/pricing/.env
+  #   ports:
+  #     - '3004:3004'
+  #   volumes:
+  #     - .:/usr/src/app
+
+  # reservations:
+  #   build: 
+  #     context: .
+  #     dockerfile: ./apps/reservations/Dockerfile
+  #     target: development
+  #   command: npm run start:dev reservations
+  #   env_file:
+  #     - ./apps/reservations/.env
+  #   ports:
+  #     - '3003:3003'
   #   volumes:
   #     - .:/usr/src/app
 
   mongo:
     container_name: mongo
-    image: mongodb/mongodb-community-server:6.0-ubi8
+    image: mongo:6-jammy
     volumes:
-      - mongo_data:/data/db
+      - dbdata6:/data/db
     ports:
       - '27017:27017'
 
@@ -40,4 +91,4 @@ services:
       - '5672:5672'
       - '15672:15672'
 volumes:
-  mongo_data:
+  dbdata6:

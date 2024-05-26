@@ -64,7 +64,6 @@ export class AuthService {
 
   async signin(signinDto: SigninDto) {
     const user = await this.userService.validateUser(signinDto);
-
     const payload = {
       sub: user._id.toString(),
       role: user.role,
@@ -79,7 +78,6 @@ export class AuthService {
 
   async signup(createuserDto: CreateUserDto) {
     const user = await this.userService.create(createuserDto);
-
     await this.sendVerification(user._id.toString());
     return user;
   }

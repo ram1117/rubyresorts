@@ -16,17 +16,13 @@ export class UsersService {
   constructor(private readonly userRepo: UserRepository) {}
 
   async isUniqueUser(email: string) {
-    try {
-      await this.userRepo.findOne({ email });
-    } catch (err) {
-      return;
-    }
-    throw new UnprocessableEntityException('Email already exists');
+    const user = await this.userRepo.findOne({ email });
+    if (user) throw new UnprocessableEntityException('Email already exists');
+    return;
   }
 
   async create(createUserDto: CreateUserDto) {
     await this.isUniqueUser(createUserDto.email);
-
     return await this.userRepo.create({
       ...createUserDto,
       verified: false,
@@ -71,14 +67,17 @@ export class UsersService {
 
   async validateUser({ username, password }: SigninDto) {
     const user = await this.userRepo.findOne({ username });
+
     if (!user) {
       throw new NotFoundException('Use not found');
     }
 
     const isValidPassword = await bcrypt.compare(password, user.password);
+
     if (!isValidPassword) {
       throw new UnauthorizedException('Wrong password');
     }
+
     return user;
   }
 }
