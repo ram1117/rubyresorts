@@ -3,7 +3,7 @@ import { InventryRepository } from './inventory.repository';
 import { CheckAvailabilityDto } from './dtos/check-availability.dto';
 import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { RoomTypeDocument } from 'apps/rooms/src/model/room_type.model';
+import { RoomTypeDocument } from '@app/shared/models/room_type.model';
 import { UpdateInventoryDto } from './dtos/update-inventory.dto';
 import { differenceInCalendarDays } from 'date-fns';
 

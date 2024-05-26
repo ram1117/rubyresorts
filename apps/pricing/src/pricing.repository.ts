@@ -3,7 +3,7 @@ import { PriceDocument } from '../../../libs/shared/src/models/price.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
-import { RoomTypeDocument } from 'apps/rooms/src/model/room_type.model';
+import { RoomTypeDocument } from '@app/shared/models/room_type.model';
 
 @Injectable()
 export class PricingRepository extends AbstractRepository<PriceDocument> {

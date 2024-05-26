@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { RoomTypeDocument } from './model/room_type.model';
+import { RoomTypeDocument } from '@app/shared/models/room_type.model';
 import { AbstractRepository } from '@app/shared';
 import { InjectModel } from '@nestjs/mongoose';
 

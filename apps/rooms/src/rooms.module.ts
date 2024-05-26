@@ -10,7 +10,10 @@ import {
 import { RoomTypeRepository } from './rooms.repository';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
-import { AmenityDocument, AmenitySchema } from './model/amenity.model';
+import {
+  AmenityDocument,
+  AmenitySchema,
+} from '../../../libs/shared/src/models/amenity.model';
 import { SeederService } from './seeder.service';
 import { PriceDocument, PriceSchema } from '@app/shared/models/price.model';
 import {
