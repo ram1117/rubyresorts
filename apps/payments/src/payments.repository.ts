@@ -1,6 +1,5 @@
 import { AbstractRepository } from '@app/shared';
 import { Injectable } from '@nestjs/common';
-// import { InvoiceDocument } from './models/invoice.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
 import { PaymentDocument } from './models/payment.model';
