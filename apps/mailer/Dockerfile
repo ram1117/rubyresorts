@@ -1,14 +1,16 @@
-FROM node:14-alpine as development
+FROM node:20-alpine as development
 WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
 COPY apps/mailer apps/mailer
 COPY libs libs
 COPY tsconfig.json tsconfig.json
+COPY nest-cli.json nest-cli.json
+RUN npm install
 RUN cd apps/mailer && npm install
-RUN npm run build
+RUN npm run build mailer
 
-FROM node:14-alpine as production
+FROM node:20-alpine as production
 ARG NODE_ENV=production
 ENV NODE_ENV={NODE_ENV}
 WORKDIR /usr/src/app

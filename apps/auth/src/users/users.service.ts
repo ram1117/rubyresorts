@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { UserRepository } from './users.repository';
 import { CreateUserDto } from './dtos/create_user.dto';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { SigninDto } from './dtos/signin.dto';
 import { UserEntity } from './entities/user.entity';
 import { UpdateUserDto } from './dtos/update_user.dto';
