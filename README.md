@@ -3,12 +3,13 @@
 ## Description
 
 **Ruby Resorts** is the backend NestJs application for a resort with booking functionality.
-TBA
+I have used hybrid NestJS application that utilizes Microservice architecture. The project is organized as a monorepo. I used RabbitMQ as messaging broker between microservices and Mongoose and MongoDB for database.
+The applications are deployed in Azure. The front-end is deployed in Vercel.
 
 ## Live Demo
 
 TBA
-A live version of the application is hosted [TBA](TBA).
+A live version of the application is hosted [On Vercel](https://rubyresorts-fe.vercel.app/).
 
 The service is deployed in free tier and may not be available instantly. Please wait a few minutes for the application to start
 
@@ -24,7 +25,7 @@ https://github.com/ram1117/rubyresorts.git
 
 - Need NPM to install the packages needed for the project
 - Need Git and Github account to setup and contribute to the project
-- Need Docker engine to run Postgres Database in a docker container(Not needed if Postgres is installed locally)
+- Need Docker engine to run MongoDB and RabbitMQ in a docker container.
 
 ## Installing
 
@@ -38,17 +39,6 @@ Before running the app, you will need to run docker container to use database as
 
 ```bash
 $ docker compose up -d
-```
-
-Create `.env.development` file at the root of the project and add following keys.
-
-```bash
-DATABASE_URL="postgresql://<username>:<password>@localhost:5432/<dbname>"
-FIREBASE_CONFIG='{
-"projectId":"<YOUR_FIREBASE_PROJECT_ID>",
-"clientEmail":"<YOUR_FIREBASE_CLIENT_EMAIL>",
-"privateKey":"<YOUR_FIREBASE_PRIVATE_KEY"
-}'
 ```
 
 ## Running the app
