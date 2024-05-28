@@ -8,7 +8,11 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   app.connectMicroservice(configService.getOrThrow('pricingconfig'));
-  await app.listen(configService.get('HTTP_PORT'));
+  app.enableCors({
+    origin: configService.getOrThrow('FRONT_END'),
+    credentials: true,
+  });
+  await app.listen(3004);
   app.startAllMicroservices();
 }
 bootstrap();

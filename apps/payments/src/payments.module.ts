@@ -27,7 +27,7 @@ import { SERVICE_NAMES } from '@app/shared/constants';
         MONGODB_URL: Joi.string().required(),
         STRIPE_SECRET_KEY: Joi.string().required(),
         STRIPE_WEBHOOK_SECRET: Joi.string().required(),
-        HTTP_PORT: Joi.string().required(),
+        FRONT_END: Joi.string().required(),
       }),
     }),
     DatabaseModule,

@@ -27,8 +27,8 @@ import {
       load: [RabbitMQConfig],
       validationSchema: Joi.object({
         MONGODB_URL: Joi.string().required(),
-        HTTP_PORT: Joi.string().required(),
         RABBITMQ_URL: Joi.string().required(),
+        FRONT_END: Joi.string().required(),
       }),
     }),
     DatabaseModule,

@@ -28,7 +28,6 @@ import {
       validationSchema: Joi.object({
         MONGODB_URL: Joi.string().required(),
         RABBITMQ_URL: Joi.string().required(),
-        HTTP_PORT: Joi.string().required(),
       }),
     }),
     DatabaseModule,

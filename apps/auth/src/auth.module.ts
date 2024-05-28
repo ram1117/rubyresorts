@@ -21,12 +21,12 @@ import { SERVICE_NAMES } from '@app/shared/constants';
       load: [RabbitMQConfig],
       validationSchema: Joi.object({
         MONGODB_URL: Joi.string().required(),
-        HTTP_PORT: Joi.string().required(),
         RABBITMQ_URL: Joi.string().required(),
         AT_JWT_SECRET: Joi.string().required(),
         RT_JWT_SECRET: Joi.string().required(),
         AT_EXPIRY: Joi.string().required(),
         RT_EXPIRY: Joi.string().required(),
+        FRONT_END: Joi.string().required(),
       }),
     }),
     ClientsModule.registerAsync([

@@ -12,7 +12,11 @@ async function bootstrap() {
   app.use(rawbodyMiddleware());
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   app.connectMicroservice(configService.getOrThrow('paymentconfig'));
+  app.enableCors({
+    origin: configService.getOrThrow('FRONT_END'),
+    credentials: true,
+  });
   app.startAllMicroservices();
-  app.listen(configService.getOrThrow('HTTP_PORT'));
+  app.listen(3006);
 }
 bootstrap();
