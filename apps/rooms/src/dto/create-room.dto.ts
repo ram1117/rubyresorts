@@ -1,6 +1,6 @@
 import { IsString, IsNumber, IsArray } from 'class-validator';
-import { AmenityDocument } from '../model/amenity.model';
-import { PriceDocument } from '../../../pricing/src/model/price.model';
+import { AmenityDocument } from '../../../../libs/shared/src/models/amenity.model';
+import { PriceDocument } from '../../../../libs/shared/src/models/price.model';
 import { Types } from 'mongoose';
 
 export class CreateRoomDto {

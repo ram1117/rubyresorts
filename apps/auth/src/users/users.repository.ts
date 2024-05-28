@@ -1,5 +1,5 @@
 import { AbstractRepository } from '@app/shared';
-import { UserDocument } from './models/userdocument';
+import { UserDocument } from '../../../../libs/shared/src/models/userdocument';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';

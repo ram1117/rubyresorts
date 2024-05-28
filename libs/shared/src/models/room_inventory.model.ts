@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { RoomTypeDocument } from 'apps/rooms/src/model/room_type.model';
+import { RoomTypeDocument } from './room_type.model';
 import { Types } from 'mongoose';
 import { AbstractDocument } from '@app/shared';
 

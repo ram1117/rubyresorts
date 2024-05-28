@@ -9,7 +9,7 @@ import {
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../guards/jwtauth.guard';
 import { CurrentUser } from '../../../../libs/shared/src/decorators/current-user.decorator';
-import { UserDocument } from './models/userdocument';
+import { UserDocument } from '../../../../libs/shared/src/models/userdocument';
 import MongooseSerializeInterceptor from '@app/shared/interceptors/mongoose-serializer.interceptor';
 import { UpdateUserDto } from './dtos/update_user.dto';
 

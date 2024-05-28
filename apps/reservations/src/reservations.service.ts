@@ -64,7 +64,6 @@ export class ReservationsService {
       total_price: availability.prices.grand,
       status: RESERVATION_STATUS.PENDING,
       roomtype: new Types.ObjectId(createReservationDto.roomtype),
-      invoice: null,
     });
 
     if (!reservation) {

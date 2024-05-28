@@ -9,15 +9,15 @@ import { PricingRepository } from './pricing.repository';
 import {
   RoomInventoryDocument,
   RoomInventorySchema,
-} from './model/room_inventory.model';
+} from '@app/shared/models/room_inventory.model';
 import { InventryRepository } from './inventory.repository';
-import { PriceDocument, PriceSchema } from './model/price.model';
+import { PriceDocument, PriceSchema } from '@app/shared/models/price.model';
 import { DatabaseModule } from '@app/shared';
 import { InventoryService } from './inventory.service';
 import {
   RoomTypeDocument,
   RoomTypeSchema,
-} from 'apps/rooms/src/model/room_type.model';
+} from '@app/shared/models/room_type.model';
 
 @Module({
   imports: [
@@ -28,7 +28,6 @@ import {
       validationSchema: Joi.object({
         MONGODB_URL: Joi.string().required(),
         RABBITMQ_URL: Joi.string().required(),
-        HTTP_PORT: Joi.string().required(),
       }),
     }),
     DatabaseModule,

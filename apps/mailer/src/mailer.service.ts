@@ -50,7 +50,7 @@ export class MailerService {
 
     const html = template({
       name: data.user.fullname,
-      link: `${this.configService.get('CLIENT_URL')}${data?.link}`,
+      link: `${this.configService.get('FRONT_END')}${data?.link}`,
       code: data?.code,
     });
     return html;

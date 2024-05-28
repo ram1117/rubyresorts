@@ -8,8 +8,11 @@ async function bootstrap() {
   const app = await NestFactory.create(ReservationsModule);
   const configService = app.get(ConfigService);
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
-
   app.use(cookieparser());
-  await app.listen(configService.get('HTTP_PORT'));
+  app.enableCors({
+    origin: configService.getOrThrow('FRONT_END'),
+    credentials: true,
+  });
+  await app.listen(3003);
 }
 bootstrap();

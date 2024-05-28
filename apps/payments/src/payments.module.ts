@@ -6,17 +6,12 @@ import RabbitMQConfig from '@app/shared/config/microservice/queue.config';
 import * as Joi from 'joi';
 import { DatabaseModule } from '@app/shared';
 import { MongooseModule } from '@nestjs/mongoose';
-// import { InvoiceDocument, InvoiceSchema } from './models/invoice.model';
 import {
   ReservationsDocument,
   ReservationsSchema,
-} from 'apps/reservations/src/models/reservations.model';
+} from '@app/shared/models/reservations.model';
 import { PaymentsRepository } from './payments.repository';
-import {
-  UserDocument,
-  UserSchema,
-} from 'apps/auth/src/users/models/userdocument';
-import { ReservationsRepository } from 'apps/reservations/src/reservations.repoistory';
+import { UserDocument, UserSchema } from '@app/shared/models/userdocument';
 import { PaymentDocument, PaymentSchema } from './models/payment.model';
 import { ClientsModule } from '@nestjs/microservices';
 import { SERVICE_NAMES } from '@app/shared/constants';
@@ -32,7 +27,7 @@ import { SERVICE_NAMES } from '@app/shared/constants';
         MONGODB_URL: Joi.string().required(),
         STRIPE_SECRET_KEY: Joi.string().required(),
         STRIPE_WEBHOOK_SECRET: Joi.string().required(),
-        HTTP_PORT: Joi.string().required(),
+        FRONT_END: Joi.string().required(),
       }),
     }),
     DatabaseModule,
@@ -51,6 +46,6 @@ import { SERVICE_NAMES } from '@app/shared/constants';
     ]),
   ],
   controllers: [PaymentsController],
-  providers: [PaymentsService, PaymentsRepository, ReservationsRepository],
+  providers: [PaymentsService, PaymentsRepository],
 })
 export class PaymentsModule {}

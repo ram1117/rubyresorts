@@ -1,6 +1,6 @@
 import { AbstractDocument } from '@app/shared';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ReservationsDocument } from 'apps/reservations/src/models/reservations.model';
+import { ReservationsDocument } from '@app/shared/models/reservations.model';
 import { Types } from 'mongoose';
 
 @Schema()

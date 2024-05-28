@@ -19,12 +19,11 @@ RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=cache,target=/root/.npm \
     npm ci
 COPY . .
-RUN npm run build rooms
+RUN npm run build mailer
 
 FROM base as final
 ENV NODE_ENV production
 COPY package.json .
 COPY --from=deps /usr/src/app/node_modules ./node_modules
 COPY --from=build /usr/src/app/. ./.
-EXPOSE 3001
-CMD ["node","dist/apps/rooms/main"]
+CMD ["node","dist/apps/mailer/main"]

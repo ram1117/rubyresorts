@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { ReservationsDocument } from './models/reservations.model';
+import { ReservationsDocument } from '../../../libs/shared/src/models/reservations.model';
 import { Model, Types } from 'mongoose';
 import { AbstractRepository } from '@app/shared';
 

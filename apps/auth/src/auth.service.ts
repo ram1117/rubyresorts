@@ -9,11 +9,10 @@ import { UsersService } from './users/users.service';
 import { SigninDto } from './users/dtos/signin.dto';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { hash, compare } from 'bcrypt';
+import { hash, compare } from 'bcryptjs';
 import { CreateUserDto } from './users/dtos/create_user.dto';
 import { OtpDto } from './users/dtos/otp.dto';
 import * as crypto from 'crypto';
-import * as bcrypt from 'bcrypt';
 import { ClientProxy } from '@nestjs/microservices';
 import {
   MAIL_TYPE,
@@ -64,7 +63,6 @@ export class AuthService {
 
   async signin(signinDto: SigninDto) {
     const user = await this.userService.validateUser(signinDto);
-
     const payload = {
       sub: user._id.toString(),
       role: user.role,
@@ -79,7 +77,6 @@ export class AuthService {
 
   async signup(createuserDto: CreateUserDto) {
     const user = await this.userService.create(createuserDto);
-
     await this.sendVerification(user._id.toString());
     return user;
   }
@@ -108,7 +105,7 @@ export class AuthService {
     }
 
     const randomstring = crypto.randomBytes(3).toString('hex').toUpperCase();
-    const otp = await bcrypt.hash(randomstring.toLowerCase(), 10);
+    const otp = await hash(randomstring.toLowerCase(), 10);
     const otpExpiry = addMinutes(new Date(), 5);
 
     await this.userService.updateOtp(user._id.toString(), { otp, otpExpiry });
@@ -176,7 +173,7 @@ export class AuthService {
     if (user.otpExpiry < new Date())
       throw new UnprocessableEntityException('OTP has expired');
 
-    const isValidOtp = await bcrypt.compare(otpDto.otp.toLowerCase(), user.otp);
+    const isValidOtp = await compare(otpDto.otp.toLowerCase(), user.otp);
 
     if (!isValidOtp)
       throw new UnprocessableEntityException('Wrong OTP entered');

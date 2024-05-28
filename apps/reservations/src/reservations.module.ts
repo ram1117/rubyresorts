@@ -9,18 +9,15 @@ import * as Joi from 'joi';
 import {
   ReservationsDocument,
   ReservationsSchema,
-} from './models/reservations.model';
+} from '@app/shared/models/reservations.model';
 import { ReservationsRepository } from './reservations.repoistory';
 import { ClientsModule } from '@nestjs/microservices';
 import { SERVICE_NAMES } from '@app/shared/constants';
-import {
-  UserDocument,
-  UserSchema,
-} from 'apps/auth/src/users/models/userdocument';
+import { UserDocument, UserSchema } from '@app/shared/models/userdocument';
 import {
   RoomTypeDocument,
   RoomTypeSchema,
-} from 'apps/rooms/src/model/room_type.model';
+} from '@app/shared/models/room_type.model';
 
 @Module({
   imports: [
@@ -30,8 +27,8 @@ import {
       load: [RabbitMQConfig],
       validationSchema: Joi.object({
         MONGODB_URL: Joi.string().required(),
-        HTTP_PORT: Joi.string().required(),
         RABBITMQ_URL: Joi.string().required(),
+        FRONT_END: Joi.string().required(),
       }),
     }),
     DatabaseModule,
