@@ -14,7 +14,6 @@ import {
   AmenityDocument,
   AmenitySchema,
 } from '../../../libs/shared/src/models/amenity.model';
-import { SeederService } from './seeder.service';
 import { PriceDocument, PriceSchema } from '@app/shared/models/price.model';
 import {
   RoomInventoryDocument,
@@ -28,7 +27,7 @@ import {
       isGlobal: true,
       validationSchema: Joi.object({
         MONGODB_URL: Joi.string().required(),
-        HTTP_PORT: Joi.string().required(),
+        FRONT_END: Joi.string().required(),
       }),
     }),
     DatabaseModule,
@@ -40,6 +39,6 @@ import {
     ]),
   ],
   controllers: [RoomsController],
-  providers: [RoomsService, SeederService, RoomTypeRepository],
+  providers: [RoomsService, RoomTypeRepository],
 })
 export class RoomsModule {}
