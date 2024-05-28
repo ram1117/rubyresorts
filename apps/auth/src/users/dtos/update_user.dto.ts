@@ -1,10 +1,6 @@
-import { IsMobilePhone, IsString, IsStrongPassword } from 'class-validator';
+import { IsMobilePhone } from 'class-validator';
 
 export class UpdateUserDto {
-  @IsString()
-  @IsStrongPassword()
-  password: string;
-
   @IsMobilePhone()
   mobile: string;
 }

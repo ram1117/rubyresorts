@@ -18,6 +18,9 @@ export class UserEntity {
   @Exclude()
   otp: string | null;
 
+  @Exclude()
+  otpExpiry: Date | null;
+
   email: string;
   username: string;
   fullname: string;

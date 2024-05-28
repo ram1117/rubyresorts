@@ -1,81 +1,81 @@
 version: '3'
 services:
 
-  rooms:
-    build: 
-      context: .
-      dockerfile: ./apps/rooms/Dockerfile
-      target: development
-    command: npm run start:dev rooms
-    env_file:
-      - ./apps/rooms/.env
-    ports:
-      - '3001:3001'
-    volumes:
-      - .:/usr/src/app
+  # rooms:
+  #   build: 
+  #     context: .
+  #     dockerfile: ./apps/rooms/Dockerfile
+  #     target: development
+  #   command: npm run start:dev rooms
+  #   env_file:
+  #     - ./apps/rooms/.env
+  #   ports:
+  #     - '3001:3001'
+  #   volumes:
+  #     - .:/usr/src/app
 
-  auth:
-    build: 
-      context: .
-      dockerfile: ./apps/auth/Dockerfile
-      target: development
-    command: npm run start:dev auth
-    env_file:
-      - ./apps/auth/.env
-    ports:
-      - '3002:3002'
-    volumes:
-      - .:/usr/src/app
+  # auth:
+  #   build: 
+  #     context: .
+  #     dockerfile: ./apps/auth/Dockerfile
+  #     target: development
+  #   command: npm run start:dev auth
+  #   env_file:
+  #     - ./apps/auth/.env
+  #   ports:
+  #     - '3002:3002'
+  #   volumes:
+  #     - .:/usr/src/app
 
-  mailer:
-    build: 
-      context: .
-      dockerfile: ./apps/mailer/Dockerfile
-      target: development
-    command: npm run start:dev mailer
-    env_file:
-      - ./apps/mailer/.env
-    volumes:
-      - .:/usr/src/app
+  # mailer:
+  #   build: 
+  #     context: .
+  #     dockerfile: ./apps/mailer/Dockerfile
+  #     target: development
+  #   command: npm run start:dev mailer
+  #   env_file:
+  #     - ./apps/mailer/.env
+  #   volumes:
+  #     - .:/usr/src/app
 
-  payments:
-    build: 
-      context: .
-      dockerfile: ./apps/payments/Dockerfile
-      target: development
-    command: npm run start:dev payments
-    env_file:
-      - ./apps/payments/.env
-    ports:
-      - '3006:3006'
-    volumes:
-      - .:/usr/src/app
+  # payments:
+  #   build: 
+  #     context: .
+  #     dockerfile: ./apps/payments/Dockerfile
+  #     target: development
+  #   command: npm run start:dev payments
+  #   env_file:
+  #     - ./apps/payments/.env
+  #   ports:
+  #     - '3006:3006'
+  #   volumes:
+  #     - .:/usr/src/app
 
-  pricing:
-    build: 
-      context: .
-      dockerfile: ./apps/pricing/Dockerfile
-      target: development
-    command: npm run start:dev pricing
-    env_file:
-      - ./apps/pricing/.env
-    ports:
-      - '3004:3004'
-    volumes:
-      - .:/usr/src/app
+  # pricing:
+  #   build: 
+  #     context: .
+  #     dockerfile: ./apps/pricing/Dockerfile
+  #     target: development
+  #   command: npm run start:dev pricing
+  #   env_file:
+  #     - ./apps/pricing/.env
+  #   ports:
+  #     - '3004:3004'
+  #   volumes:
+  #     - .:/usr/src/app
 
-  reservations:
-    build: 
-      context: .
-      dockerfile: ./apps/reservations/Dockerfile
-      target: development
-    command: npm run start:dev reservations
-    env_file:
-      - ./apps/reservations/.env
-    ports:
-      - '3003:3003'
-    volumes:
-      - .:/usr/src/app
+  # reservations:
+    # build: 
+    #   context: .
+    #   dockerfile: ./apps/reservations/Dockerfile
+    #   target: development
+    # command: npm run start:dev reservations
+    # env_file:
+    #   - ./apps/reservations/.env
+    # ports:
+    #   - '3003:3003'
+    # volumes:
+    #   - .:/usr/src/app
 
   mongo:
     container_name: mongo
