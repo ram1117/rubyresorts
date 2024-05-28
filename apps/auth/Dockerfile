@@ -1,20 +1,30 @@
-FROM node:20-alpine as development
+# syntax=docker/dockerfile:1
+
+ARG NODE_VERSION=21.3.0
+FROM node:${NODE_VERSION}-alpine as base
 WORKDIR /usr/src/app
-COPY package*.json ./
-RUN npm install
-COPY apps/auth apps/auth
-COPY libs libs
-COPY tsconfig.json tsconfig.json
-COPY nest-cli.json nest-cli.json
-RUN npm install
-RUN cd apps/auth && npm install
+FROM base as deps
+RUN --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=package-lock.json,target=package-lock.json \
+    --mount=type=bind,source=tsconfig.json,target=tsconfig.json \
+    --mount=type=bind,source=nest-cli.json,target=nest-cli.json \
+    --mount=type=cache,target=/root/.npm \
+    npm ci --omit=dev --ignore-scripts
+
+FROM deps as build
+RUN --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=package-lock.json,target=package-lock.json \
+    --mount=type=bind,source=tsconfig.json,target=tsconfig.json \
+    --mount=type=bind,source=nest-cli.json,target=nest-cli.json \
+    --mount=type=cache,target=/root/.npm \
+    npm ci
+COPY . .
 RUN npm run build auth
 
-FROM node:20-alpine as production
-ARG NODE_ENV=production
-ENV NODE_ENV={NODE_ENV}
-WORKDIR /usr/src/app
-COPY package*.json ./
-RUN npm ci && npm cache clean --force
-COPY --from=development usr/src/app/dist ./dist
-CMD [ "node",'dist/apps/auth/main' ]
+FROM base as final
+ENV NODE_ENV production
+COPY package.json .
+COPY --from=deps /usr/src/app/node_modules ./node_modules
+COPY --from=build /usr/src/app/. ./.
+EXPOSE 3002
+CMD ["node","dist/apps/auth/main"]
